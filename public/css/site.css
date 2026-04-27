@@ -31,6 +31,12 @@ h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -.3px; }
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; height: auto; }
 
+/* ── GOOGLE FONTS BACKUP / UTILITY ─────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--blue), #4285f4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
 /* ── SCROLLBAR ──────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--paper); }
@@ -509,11 +515,22 @@ footer { background: #060e1a; color: #fff; padding: 60px 64px 28px; }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.07); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: rgba(255,255,255,.3); flex-wrap: wrap; gap: 10px; }
 
 /* ── ANIMATIONS ─────────────────────────────────────────── */
-@keyframes blink   { 0%,100%{opacity:1;} 50%{opacity:.2;} }
-@keyframes floatY  { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
-@keyframes ticker  { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
-@keyframes fadeUp  { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
-@keyframes fadeIn  { from{opacity:0;} to{opacity:1;} }
+@keyframes blink          { 0%,100%{opacity:1;} 50%{opacity:.2;} }
+@keyframes floatY         { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
+@keyframes ticker         { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+@keyframes fadeUp         { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fadeIn         { from{opacity:0;} to{opacity:1;} }
+@keyframes particleFloat  { 0%{transform:translate(0,0) rotate(0deg);} 33%{transform:translate(40px,-60px) rotate(120deg);} 66%{transform:translate(-30px,-100px) rotate(240deg);} 100%{transform:translate(0,-160px) rotate(360deg);opacity:0;} }
+@keyframes shimmer        { 0%{background-position:-200% 0;} 100%{background-position:200% 0;} }
+@keyframes pulse-ring     { 0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(17,85,204,.5);} 70%{transform:scale(1);box-shadow:0 0 0 12px rgba(17,85,204,0);} 100%{transform:scale(.95);} }
+
+/* ── SHIMMER LOADING STATE ──────────────────────────────── */
+.shimmer {
+  background: linear-gradient(90deg, var(--border) 25%, var(--paper) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
 
 /* ── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 1100px) {
@@ -542,4 +559,86 @@ footer { background: #060e1a; color: #fff; padding: 60px 64px 28px; }
   .quiz-topics      { gap: 8px; }
   .yt-stats         { gap: 20px; }
   .stats-bar        { grid-template-columns: repeat(2,1fr); }
+}
+
+/* ── MOBILE-FIRST TOUCH IMPROVEMENTS ───────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger tap targets on mobile */
+  .quiz-opt        { padding: 16px 18px; min-height: 52px; }
+  .btn             { padding: 16px 28px; }
+  nav ul a         { padding: 8px 0; }
+  .buy-btn         { padding: 12px 22px; }
+  .download-btn    { padding: 14px 18px; }
+
+  /* Remove hover-only effects that feel broken on touch */
+  .course-card:hover, .mat-card:hover, .testi-card:hover { transform: none; box-shadow: none; }
+}
+
+/* ── MOBILE NAV ANIMATION ───────────────────────────────── */
+.mobile-menu {
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform .25s ease, opacity .25s ease;
+  display: flex !important;
+  pointer-events: none;
+}
+.mobile-menu.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── ENHANCED SCROLL REVEAL STAGGER ────────────────────── */
+.reveal:nth-child(2) { transition-delay: .08s; }
+.reveal:nth-child(3) { transition-delay: .16s; }
+.reveal:nth-child(4) { transition-delay: .24s; }
+.reveal:nth-child(5) { transition-delay: .32s; }
+.reveal:nth-child(6) { transition-delay: .40s; }
+
+/* ── QUIZ WIDGET MOBILE ─────────────────────────────────── */
+@media (max-width: 600px) {
+  .quiz-widget { padding: 22px 18px; border-radius: 18px; }
+  .quiz-question { font-size: 15px; }
+  .quiz-opt      { font-size: 13px; }
+  .quiz-actions  { flex-direction: column; align-items: stretch; gap: 10px; }
+  .quiz-actions .btn { width: 100%; justify-content: center; }
+}
+
+/* ── SMOOTH PAGE TRANSITIONS ────────────────────────────── */
+body { animation: fadeIn .3s ease; }
+
+/* ── GLASS CARD EFFECT ──────────────────────────────────── */
+.glass-card {
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.3);
+}
+
+/* ── COURSE CARD HOVER GLOW ─────────────────────────────── */
+.course-card:hover .course-thumb { filter: brightness(1.08); }
+.course-card:hover .buy-btn { background: var(--navy); }
+
+/* ── PULSE ANIMATION on LIVE DOT ────────────────────────── */
+.live-dot { animation: blink 1.2s infinite, pulse-ring 2s infinite; }
+
+/* ── QUIZ RESULT CELEBRATION ────────────────────────────── */
+.quiz-result .score { animation: fadeUp .5s ease both; }
+.quiz-result .result-msg { animation: fadeUp .5s .15s ease both; }
+
+/* ── FOOTER SMOOTH LINKS ────────────────────────────────── */
+.footer-col ul a { position: relative; }
+.footer-col ul a::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width .2s ease;
+}
+.footer-col ul a:hover::after { width: 100%; }
+
+/* ── SAFE AREA SUPPORT (iPhone notch) ───────────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  footer { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+  .mobile-menu { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 }

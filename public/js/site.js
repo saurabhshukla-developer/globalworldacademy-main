@@ -1,6 +1,7 @@
 /**
  * Global World Academy — Landing Page JS
  * Handles: quiz widget, nav, scroll reveal, FAQ, counter animation
+ * Note: window.quizData is injected inline from the Blade template (DB-driven)
  */
 
 /* ── QUIZ WIDGET (embedded in landing page) ─────────────── */
@@ -158,10 +159,36 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleMenu() {
   var menu = document.getElementById('mobileMenu');
   var btn  = document.getElementById('ham');
-  menu.classList.toggle('open');
-  btn.setAttribute('aria-expanded', menu.classList.contains('open'));
+  var open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+  // Animate hamburger to X
+  var spans = btn.querySelectorAll('span');
+  if (open) {
+    spans[0].style.transform = 'rotate(45deg) translate(5px,5px)';
+    spans[1].style.opacity   = '0';
+    spans[2].style.transform = 'rotate(-45deg) translate(5px,-5px)';
+  } else {
+    spans[0].style.transform = '';
+    spans[1].style.opacity   = '';
+    spans[2].style.transform = '';
+  }
 }
 function closeMenu() {
-  document.getElementById('mobileMenu').classList.remove('open');
-  document.getElementById('ham').setAttribute('aria-expanded', 'false');
+  var menu  = document.getElementById('mobileMenu');
+  var btn   = document.getElementById('ham');
+  var spans = btn.querySelectorAll('span');
+  menu.classList.remove('open');
+  btn.setAttribute('aria-expanded', 'false');
+  spans[0].style.transform = '';
+  spans[1].style.opacity   = '';
+  spans[2].style.transform = '';
 }
+
+/* ── CLOSE MENU ON OUTSIDE CLICK ────────────────────────── */
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('mobileMenu');
+  var ham  = document.getElementById('ham');
+  if (menu && menu.classList.contains('open')) {
+    if (!menu.contains(e.target) && !ham.contains(e.target)) closeMenu();
+  }
+});
