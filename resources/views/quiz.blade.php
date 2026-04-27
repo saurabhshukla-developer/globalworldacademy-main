@@ -48,16 +48,13 @@
 
   <!-- Topic tabs (dynamically rendered from DB topics) -->
   <div class="topic-tabs" role="tablist" aria-label="Quiz topics">
-    @php
-      $topicIcons = ['science'=>'🔬','child_dev'=>'👶','gk'=>'🌍','mp'=>'🗺️'];
-      $topicNames = ['science'=>'Science','child_dev'=>'Child Dev','gk'=>'General Knowledge','mp'=>'MP GK'];
-      $first = true;
-    @endphp
-    @foreach($quizData->keys() as $topic)
+    @php $first = true; @endphp
+    @foreach($quizData as $topicSlug => $topicInfo)
     <button class="topic-tab {{ $first ? 'active' : '' }}"
-            onclick="loadQuiz('{{ $topic }}',this)"
+            onclick="loadQuiz('{{ $topicSlug }}',this)"
             role="tab" aria-selected="{{ $first ? 'true' : 'false' }}">
-      {{ $topicIcons[$topic] ?? '📝' }} {{ $topicNames[$topic] ?? ucfirst($topic) }}
+      {{ $topicInfo['icon'] ?? '📝' }}
+      {{ app()->getLocale() === 'hi' && !empty($topicInfo['name_hi']) ? $topicInfo['name_hi'] : $topicInfo['name'] }}
     </button>
     @php $first = false; @endphp
     @endforeach
@@ -70,9 +67,9 @@
 <div class="quiz-page-main">
 
   <div class="quiz-stats-row">
-    <div class="qs-card"><span class="qs-num">10</span><span class="qs-lbl">Questions</span></div>
-    <div class="qs-card"><span class="qs-num">{{ $quizData->count() }}</span><span class="qs-lbl">Topics</span></div>
-    <div class="qs-card"><span class="qs-num">Free</span><span class="qs-lbl">No Login</span></div>
+    <div class="qs-card"><span class="qs-num">10</span><span class="qs-lbl">{{ __('site.qp_questions') }}</span></div>
+    <div class="qs-card"><span class="qs-num">{{ count($quizData) }}</span><span class="qs-lbl">{{ __('site.qp_topics') }}</span></div>
+    <div class="qs-card"><span class="qs-num">{{ __('site.qp_free') }}</span><span class="qs-lbl">{{ __('site.qp_no_login') }}</span></div>
   </div>
 
   <!-- Quiz Widget -->

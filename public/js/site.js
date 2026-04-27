@@ -10,6 +10,13 @@ var currentQ    = 0;
 var score       = 0;
 var answered    = false;
 
+var lang = document.documentElement.lang || 'en';
+
+function getLocalText(obj, key) {
+  var hiKey = key + '_hi';
+  return (lang === 'hi' && obj[hiKey]) ? obj[hiKey] : obj[key];
+}
+
 function loadQuiz(topic, btn) {
   currentQuiz = topic; currentQ = 0; score = 0; answered = false;
   document.querySelectorAll('.quiz-topic-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -17,7 +24,7 @@ function loadQuiz(topic, btn) {
   document.getElementById('quizResult').style.display = 'none';
   document.getElementById('quizMain').style.display   = 'block';
   document.getElementById('quizIcon').textContent = window.quizData[topic].icon;
-  document.getElementById('quizName').textContent = window.quizData[topic].name;
+  document.getElementById('quizName').textContent = getLocalText(window.quizData[topic], 'name');
   renderQuestion();
 }
 
@@ -27,7 +34,7 @@ function renderQuestion() {
   var total = quiz.questions.length;
   document.getElementById('quizCounter').textContent  = (currentQ + 1) + ' / ' + total;
   document.getElementById('quizProgress').style.width = (((currentQ + 1) / total) * 100) + '%';
-  document.getElementById('quizQ').textContent        = q.q;
+  document.getElementById('quizQ').textContent = getLocalText(q, 'q');
   document.getElementById('quizExplain').style.display = 'none';
   document.getElementById('nextBtn').style.display     = 'none';
   document.getElementById('quizFeedback').textContent  = '';
@@ -54,7 +61,7 @@ function selectOpt(idx) {
     opts[idx].classList.add('wrong'); opts[q.ans].classList.add('correct');
     fb.textContent = '❌ Wrong!'; fb.style.color = 'var(--red)';
   }
-  explainEl.textContent    = '💡 ' + q.explain;
+  explainEl.textContent = '💡 ' + getLocalText(q, 'explain');
   explainEl.style.display  = 'block';
   document.getElementById('nextBtn').style.display = 'inline-flex';
 }

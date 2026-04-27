@@ -4,57 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Material;
-use App\Models\QuizQuestion;
+use App\Models\QuizCategory;
 use App\Models\SiteSetting;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $courses   = Course::active()->get();
-        $materials = Material::active()->get();
-        $settings  = SiteSetting::pluck('value', 'key');
+        $courses    = Course::active()->get();
+        $materials  = Material::active()->get();
+        $settings   = SiteSetting::pluck('value', 'key');
+        $categories = QuizCategory::with(['activeTopics.activeQuestions'])->active()->get();
+        $quizData   = $this->buildQuizData($categories);
 
-        // Build quiz data for JS (grouped by topic, active questions only)
-        $quizData = QuizQuestion::active()
-            ->get()
-            ->groupBy('topic')
-            ->map(fn($qs, $topic) => [
-                'name'      => QuizQuestion::topicLabel($topic),
-                'icon'      => str_contains(QuizQuestion::topicLabel($topic), '🔬') ? '🔬'
-                             : (str_contains(QuizQuestion::topicLabel($topic), '👶') ? '👶'
-                             : (str_contains(QuizQuestion::topicLabel($topic), '🌍') ? '🌍' : '🗺️')),
-                'questions' => $qs->map(fn($q) => [
-                    'q'       => $q->question,
-                    'opts'    => $q->options,
-                    'ans'     => $q->answer_index,
-                    'explain' => $q->explanation,
-                ])->values(),
-            ]);
-
-        return view('welcome', compact('courses', 'materials', 'settings', 'quizData'));
+        return view('welcome', compact('courses', 'materials', 'settings', 'quizData', 'categories'));
     }
 
     public function quiz()
     {
-        $settings = SiteSetting::pluck('value', 'key');
+        $settings   = SiteSetting::pluck('value', 'key');
+        $categories = QuizCategory::with(['activeTopics.activeQuestions'])->active()->get();
+        $quizData   = $this->buildQuizData($categories);
 
-        $quizData = QuizQuestion::active()
-            ->get()
-            ->groupBy('topic')
-            ->map(fn($qs, $topic) => [
-                'name'      => QuizQuestion::topicLabel($topic),
-                'icon'      => str_contains(QuizQuestion::topicLabel($topic), '🔬') ? '🔬'
-                             : (str_contains(QuizQuestion::topicLabel($topic), '👶') ? '👶'
-                             : (str_contains(QuizQuestion::topicLabel($topic), '🌍') ? '🌍' : '🗺️')),
-                'questions' => $qs->map(fn($q) => [
-                    'q'       => $q->question,
-                    'opts'    => $q->options,
-                    'ans'     => $q->answer_index,
-                    'explain' => $q->explanation,
-                ])->values(),
-            ]);
+        return view('quiz', compact('settings', 'quizData', 'categories'));
+    }
 
-        return view('quiz', compact('settings', 'quizData'));
+    /** Build JS-ready quiz data from DB categories/topics */
+    private function buildQuizData($categories): array
+    {
+        $out = [];
+        foreach ($categories as $cat) {
+            foreach ($cat->activeTopics as $topic) {
+                $questions = $topic->activeQuestions;
+                if ($questions->isEmpty()) continue;
+
+                $out[$topic->slug] = [
+                    'name'        => $topic->name,
+                    'name_hi'     => $topic->name_hi ?? $topic->name,
+                    'icon'        => $topic->icon,
+                    'category'    => $cat->name,
+                    'category_hi' => $cat->name_hi ?? $cat->name,
+                    'color'       => $cat->color,
+                    'questions'   => $questions->map(fn($q) => [
+                        'q'          => $q->question,
+                        'q_hi'       => $q->question_hi ?? $q->question,
+                        'opts'       => $q->options,
+                        'ans'        => $q->answer_index,
+                        'explain'    => $q->explanation ?? '',
+                        'explain_hi' => $q->explanation_hi ?? $q->explanation ?? '',
+                    ])->values()->toArray(),
+                ];
+            }
+        }
+        return $out;
     }
 }

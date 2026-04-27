@@ -1,0 +1,116 @@
+<?php
+
+return [
+    // ── NAV ────────────────────────────────────────────
+    'nav_courses'   => 'Courses',
+    'nav_quiz'      => 'Free Quiz',
+    'nav_materials' => 'Study Material',
+    'nav_youtube'   => 'YouTube',
+    'nav_faq'       => 'FAQ',
+    'nav_enroll'    => 'Enroll Now',
+    'nav_quiz_page' => 'Daily Quiz Page',
+
+    // ── HERO ────────────────────────────────────────────
+    'hero_pill'     => 'Live Classes on YouTube · Daily Updates',
+    'hero_cta_main' => 'Browse Courses →',
+    'hero_cta_quiz' => '🧠 Take Free Quiz',
+    'hero_trust'    => ':count+ students already enrolled',
+    'hero_trust_sub'=> 'Trusted by MPTET aspirants across MP',
+
+    // ── SECTIONS ────────────────────────────────────────
+    'courses_label'     => 'Our Courses',
+    'courses_title'     => 'Premium Course Offerings',
+    'courses_desc'      => 'Designed for MPTET Varg 2 & Varg 3 — based on the latest 2026 syllabus.',
+    'courses_view_all'  => 'View All on App →',
+    'course_buy'        => 'Buy Now',
+    'course_coming'     => 'New Course Coming Soon',
+    'course_coming_sub' => "We're working on the next course. Stay tuned or contact us.",
+    'course_more'       => 'More Courses on App',
+    'course_more_sub'   => 'Visit our Classplus app page to see all available courses.',
+
+    'quiz_label'    => 'Free Practice',
+    'quiz_title'    => 'Test Your Knowledge',
+    'quiz_desc'     => 'Attempt our free MCQ quizzes — MPTET Science, General Knowledge, Child Development and more.',
+    'quiz_choose'   => 'Choose a Topic:',
+    'quiz_full'     => '→ Open Full Daily Quiz Page',
+    'quiz_next'     => 'Next →',
+    'quiz_correct'  => '✅ Correct!',
+    'quiz_wrong'    => '❌ Wrong!',
+    'quiz_score'    => 'Your Score',
+    'quiz_retry'    => '🔄 Try Again',
+    'quiz_enroll'   => '📚 Enroll for Full Course →',
+    'quiz_results'  => [
+        100 => '🏆 Perfect Score! You\'re exam-ready!',
+        80  => '🎉 Excellent! Great preparation!',
+        60  => '👍 Good effort! Keep practicing!',
+        40  => '📚 Keep studying — you\'re getting there!',
+        0   => '💪 Don\'t give up — enroll for guided prep!',
+    ],
+    'quiz_f1'       => '10 questions per quiz — attempt anytime',
+    'quiz_f2'       => 'Instant score with correct answers shown',
+    'quiz_f3'       => 'Explanation provided for every question',
+    'quiz_f4'       => 'New quiz sets added regularly',
+
+    'materials_label'   => 'Free Resources',
+    'materials_title'   => 'Free Study Materials',
+    'materials_desc'    => 'Download free notes, chapter summaries and practice papers — no sign-up required.',
+    'materials_download'=> '↓ Download',
+    'materials_more'    => 'More Materials Soon',
+    'materials_more_sub'=> 'Subscribe to our YouTube channel to get notified when new free resources are uploaded.',
+    'materials_yt_btn'  => '▶ Subscribe on YouTube',
+
+    'youtube_badge' => '▶ YouTube Channel',
+    'youtube_title' => "Learn Free on\nYouTube — Daily",
+    'youtube_desc'  => 'Live classes, current affairs, mock tests and subject-wise sessions — all free on our YouTube channel.',
+    'youtube_btn'   => '▶ Subscribe Free',
+    'yt_subs'       => 'Subscribers',
+    'yt_videos'     => 'Videos',
+    'yt_daily'      => 'Daily',
+    'yt_daily_sub'  => 'Live Classes',
+
+    'testi_label'   => '⭐ Student Reviews',
+    'testi_title'   => 'What Our Students Say',
+    'testi_desc'    => 'Thousands of MPTET aspirants trust Global World Academy for their preparation.',
+
+    'faq_label'     => 'FAQ',
+    'faq_title'     => 'Frequently Asked Questions',
+    'faq_desc'      => 'Everything you need to know about our courses and the MPTET exam.',
+
+    'cta_title'     => 'Ready to Clear MPTET?',
+    'cta_desc'      => 'Join 10,000+ students and start your structured preparation today.',
+    'cta_btn1'      => 'Browse All Courses →',
+    'cta_btn2'      => '▶ Free YouTube Classes',
+
+    // ── QUIZ PAGE ────────────────────────────────────────
+    'qp_tagline'    => 'MPTET Expert Coaching — Varg 2 & Varg 3',
+    'qp_questions'  => 'Questions',
+    'qp_topics'     => 'Topics',
+    'qp_free'       => 'Free',
+    'qp_no_login'   => 'No Login',
+    'qp_loading'    => 'Loading question...',
+    'qp_share'      => '📢 Share this quiz with your friends preparing for MPTET!',
+    'qp_share_wa'   => '📱 Share on WhatsApp',
+    'qp_share_tg'   => '✈ Share on Telegram',
+    'qp_no_time'    => 'No Time Limit',
+    'qp_no_time_d'  => 'Attempt at your own pace — take your time to think through each answer carefully.',
+    'qp_explain'    => 'Explanations Included',
+    'qp_explain_d'  => 'Every question comes with a detailed explanation to reinforce your learning.',
+    'qp_multi'      => 'Multiple Topics',
+    'qp_multi_d'    => 'Switch between topics using the tabs above.',
+    'qp_instant'    => 'Instant Score',
+    'qp_instant_d'  => 'Get your score immediately after completing all questions.',
+
+    // ── FOOTER ──────────────────────────────────────────
+    'footer_brand_desc'  => "India's trusted online coaching platform for MPTET Varg 2 & Varg 3 aspirants — expert video classes, test series & free materials.",
+    'footer_courses'     => 'Courses',
+    'footer_resources'   => 'Free Resources',
+    'footer_links'       => 'Quick Links',
+    'footer_copy'        => '© :year Global World Academy. All rights reserved.',
+    'footer_made'        => 'Made with ❤️ for MPTET Aspirants across Madhya Pradesh',
+
+    // ── LANGUAGE SWITCHER ────────────────────────────────
+    'lang_en'   => 'EN',
+    'lang_hi'   => 'हिंदी',
+    'lang_switch_to_hi' => 'हिंदी में पढ़ें',
+    'lang_switch_to_en' => 'Read in English',
+];

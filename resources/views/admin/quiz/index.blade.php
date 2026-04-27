@@ -36,7 +36,14 @@
         @forelse($questions as $q)
         <tr>
           <td style="color:var(--muted);">{{ $q->id }}</td>
-          <td><span class="badge badge-topic">{{ $q->topic }}</span></td>
+          <td>
+            @if($q->quizTopic)
+              <div style="font-size:11px;color:var(--muted);">{{ $q->quizTopic->category->name ?? '' }}</div>
+              <span class="badge badge-topic">{{ $q->quizTopic->icon }} {{ $q->quizTopic->name }}</span>
+            @else
+              <span class="badge badge-inactive">{{ $q->topic }}</span>
+            @endif
+          </td>
           <td style="max-width:280px;">{{ Str::limit($q->question, 70) }}</td>
           <td style="font-weight:700;color:var(--green);">{{ ['A','B','C','D'][$q->answer_index] }}</td>
           <td>{{ $q->sort_order }}</td>

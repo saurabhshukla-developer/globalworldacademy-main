@@ -30,11 +30,21 @@
         <span class="icon">📊</span> Dashboard
       </a>
 
-      <div class="nav-section">Content</div>
-      <a href="{{ route('admin.quiz.index') }}"
-         class="nav-link {{ request()->routeIs('admin.quiz.*') ? 'active' : '' }}">
-        <span class="icon">🧠</span> Quiz Questions
+      <div class="nav-section">Quiz</div>
+      <a href="{{ route('admin.quiz-categories.index') }}"
+         class="nav-link {{ request()->routeIs('admin.quiz-categories.*') ? 'active' : '' }}">
+        <span class="icon">🗂️</span> Categories
       </a>
+      <a href="{{ route('admin.quiz-topics.index') }}"
+         class="nav-link {{ request()->routeIs('admin.quiz-topics.*') ? 'active' : '' }}">
+        <span class="icon">🏷️</span> Topics
+      </a>
+      <a href="{{ route('admin.quiz.index') }}"
+         class="nav-link {{ request()->routeIs('admin.quiz.index','admin.quiz.create','admin.quiz.edit') ? 'active' : '' }}">
+        <span class="icon">🧠</span> Questions
+      </a>
+
+      <div class="nav-section">Content</div>
       <a href="{{ route('admin.courses.index') }}"
          class="nav-link {{ request()->routeIs('admin.courses.*') ? 'active' : '' }}">
         <span class="icon">📚</span> Courses

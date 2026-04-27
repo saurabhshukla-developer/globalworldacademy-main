@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Course extends Model
 {
     protected $fillable = [
-        'name', 'exam_tag', 'description', 'thumb_class', 'thumb_icon',
+        'name', 'exam_tag', 'description', 'thumb_class', 'thumb_icon', 'image_path',
         'badge', 'badge_style', 'features', 'price', 'old_price',
         'buy_url', 'is_active', 'sort_order',
     ];
@@ -31,5 +32,21 @@ class Course extends Model
             return (int) round((($this->old_price - $this->price) / $this->old_price) * 100);
         }
         return null;
+    }
+
+    /** Returns the public URL for the course image, or null */
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image_path
+            ? Storage::disk('public')->url($this->image_path)
+            : null;
+    }
+
+    /** Delete stored image file */
+    public function deleteImage(): void
+    {
+        if ($this->image_path) {
+            Storage::disk('public')->delete($this->image_path);
+        }
     }
 }

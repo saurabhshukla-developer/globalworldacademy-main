@@ -18,12 +18,23 @@
   <div class="courses-grid">
     @forelse($courses as $course)
     <article class="course-card reveal">
-      <div class="course-thumb {{ $course->thumb_class }}">
-        @if($course->badge)
-          <div class="badge-new {{ $course->badge_style }}">{{ $course->badge }}</div>
-        @endif
-        {{ $course->thumb_icon }}
-      </div>
+      {{-- Show uploaded image if available, else gradient thumbnail --}}
+      @if($course->image_url)
+        <div class="course-thumb" style="background:none;padding:0;overflow:hidden;position:relative;">
+          @if($course->badge)
+            <div class="badge-new {{ $course->badge_style }}" style="position:absolute;top:12px;left:12px;z-index:2;">{{ $course->badge }}</div>
+          @endif
+          <img src="{{ $course->image_url }}" alt="{{ $course->name }}"
+               style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"/>
+        </div>
+      @else
+        <div class="course-thumb {{ $course->thumb_class }}">
+          @if($course->badge)
+            <div class="badge-new {{ $course->badge_style }}">{{ $course->badge }}</div>
+          @endif
+          {{ $course->thumb_icon }}
+        </div>
+      @endif
       <div class="course-body">
         <span class="course-exam-tag">{{ $course->exam_tag }}</span>
         <div class="course-name">{{ $course->name }}</div>
@@ -44,7 +55,7 @@
             @endif
           @endif
         </div>
-        <a href="{{ $course->buy_url }}" target="_blank" rel="noopener" class="buy-btn">Buy Now</a>
+        <a href="{{ $course->buy_url }}" target="_blank" rel="noopener" class="buy-btn">{{ __('site.course_buy') }}</a>
       </div>
     </article>
     @empty

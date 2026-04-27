@@ -2,7 +2,12 @@
  * Global World Academy — Quiz Standalone Page JS
  */
 
-var currentTopic = 'science';
+var lang = document.documentElement.lang || 'en';
+function getLocalText(obj, key) {
+  var hiKey = key + '_hi';
+  return (lang === 'hi' && obj[hiKey]) ? obj[hiKey] : obj[key];
+}
+var currentTopic = '';
 var currentQ     = 0;
 var score        = 0;
 var answered     = false;
@@ -10,9 +15,15 @@ var letters      = ['A', 'B', 'C', 'D'];
 
 function init() {
   var now = new Date();
+  var localeStr = lang === 'hi' ? 'hi-IN' : 'en-IN';
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  document.getElementById('quizDateLabel').textContent = now.toLocaleDateString('en-IN', options);
-  loadQuiz('science', document.querySelector('.topic-tab'));
+  var dateEl = document.getElementById('quizDateLabel');
+  if (dateEl) dateEl.textContent = now.toLocaleDateString(localeStr, options);
+
+  // Load first available topic from DB data
+  var firstKey = Object.keys(window.quizData || {})[0];
+  var firstTab = document.querySelector('.topic-tab');
+  if (firstKey) loadQuiz(firstKey, firstTab);
 }
 
 function loadQuiz(topic, btn) {
@@ -22,9 +33,9 @@ function loadQuiz(topic, btn) {
   });
   if (btn) { btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); }
   var data = window.quizData[topic];
-  document.getElementById('quizTopicLabel').textContent = data.name;
+  document.getElementById('quizTopicLabel').textContent = getLocalText(data, 'name');
   document.getElementById('quizIcon').textContent       = data.icon;
-  document.getElementById('quizName').textContent       = data.name;
+  document.getElementById('quizName').textContent       = getLocalText(data, 'name');
   document.getElementById('quizResult').style.display   = 'none';
   document.getElementById('quizMain').style.display     = 'block';
   document.getElementById('shareBlock').style.display   = 'none';
@@ -39,7 +50,7 @@ function renderQuestion() {
   document.getElementById('quizProgress').style.width  = pct + '%';
   var pb = document.getElementById('quizProgress').parentElement;
   if (pb) pb.setAttribute('aria-valuenow', pct);
-  document.getElementById('quizQ').textContent          = q.q;
+  document.getElementById('quizQ').textContent = getLocalText(q, 'q');
   document.getElementById('quizExplain').style.display  = 'none';
   document.getElementById('nextBtn').style.display      = 'none';
   document.getElementById('quizFeedback').textContent   = '';
@@ -65,7 +76,7 @@ function selectOpt(idx) {
     opts[idx].classList.add('wrong'); opts[q.ans].classList.add('correct');
     fb.textContent = '❌ Wrong!'; fb.style.color = 'var(--red)';
   }
-  explainEl.textContent   = '💡 ' + q.explain;
+  explainEl.textContent = '💡 ' + getLocalText(q, 'explain');
   explainEl.style.display = 'block';
   document.getElementById('nextBtn').style.display = 'inline-flex';
 }
