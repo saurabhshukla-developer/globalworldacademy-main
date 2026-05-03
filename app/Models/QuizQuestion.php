@@ -13,11 +13,11 @@ class QuizQuestion extends Model
     ];
 
     protected $casts = [
-        'options'      => 'array',
-        'is_active'    => 'boolean',
+        'options' => 'array',
+        'is_active' => 'boolean',
         'answer_index' => 'integer',
-        'sort_order'   => 'integer',
-        'topic_id'     => 'integer',
+        'sort_order' => 'integer',
+        'topic_id' => 'integer',
     ];
 
     public function quizTopic(): BelongsTo
@@ -49,12 +49,12 @@ class QuizQuestion extends Model
     // ── Legacy helpers (kept for backward compatibility) ──
     public static function topicLabel(string $topic): string
     {
-        return match($topic) {
-            'science'   => '🔬 Science',
+        return match ($topic) {
+            'science' => '🔬 Science',
             'child_dev' => '👶 Child Development',
-            'gk'        => '🌍 General Knowledge',
-            'mp'        => '🗺️ MP GK',
-            default     => ucfirst($topic),
+            'gk' => '🌍 General Knowledge',
+            'mp' => '🗺️ MP GK',
+            default => ucfirst($topic),
         };
     }
 

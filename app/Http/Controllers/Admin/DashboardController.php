@@ -14,9 +14,9 @@ class DashboardController extends Controller
     {
         $stats = [
             'questions' => QuizQuestion::count(),
-            'courses'   => Course::count(),
+            'courses' => Course::count(),
             'materials' => Material::count(),
-            'settings'  => SiteSetting::count(),
+            'settings' => SiteSetting::count(),
         ];
 
         $recentQuestions = QuizQuestion::latest()->limit(5)->get();

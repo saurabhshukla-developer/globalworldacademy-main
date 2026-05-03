@@ -13,20 +13,22 @@ class AuthController extends Controller
         if (Auth::guard('admin')->check()) {
             return redirect()->route('admin.dashboard');
         }
+
         return view('admin.login');
     }
 
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email'    => ['required', 'email'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
         if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
             return redirect()->route('admin.dashboard')
-                ->with('success', 'Welcome back, ' . Auth::guard('admin')->user()->name . '!');
+                ->with('success', 'Welcome back, '.Auth::guard('admin')->user()->name.'!');
         }
 
         return back()->withErrors(['email' => 'Invalid email or password.'])->onlyInput('email');
@@ -37,6 +39,7 @@ class AuthController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
     }
 }

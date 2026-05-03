@@ -12,8 +12,8 @@ class Material extends Model
     ];
 
     protected $casts = [
-        'tags'       => 'array',
-        'is_active'  => 'boolean',
+        'tags' => 'array',
+        'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
 

@@ -14,14 +14,14 @@ class QuizCategory extends Model
     ];
 
     protected $casts = [
-        'is_active'  => 'boolean',
+        'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
 
     protected static function boot(): void
     {
         parent::boot();
-        static::creating(fn($m) => $m->slug ??= Str::slug($m->name));
+        static::creating(fn ($m) => $m->slug ??= Str::slug($m->name));
     }
 
     public function topics(): HasMany

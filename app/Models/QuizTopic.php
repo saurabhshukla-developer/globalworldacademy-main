@@ -14,15 +14,15 @@ class QuizTopic extends Model
     ];
 
     protected $casts = [
-        'is_active'   => 'boolean',
-        'sort_order'  => 'integer',
+        'is_active' => 'boolean',
+        'sort_order' => 'integer',
         'category_id' => 'integer',
     ];
 
     protected static function boot(): void
     {
         parent::boot();
-        static::creating(fn($m) => $m->slug ??= Str::slug($m->name));
+        static::creating(fn ($m) => $m->slug ??= Str::slug($m->name));
     }
 
     public function category(): BelongsTo

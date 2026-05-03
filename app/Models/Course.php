@@ -14,10 +14,10 @@ class Course extends Model
     ];
 
     protected $casts = [
-        'features'   => 'array',
-        'is_active'  => 'boolean',
-        'price'      => 'decimal:2',
-        'old_price'  => 'decimal:2',
+        'features' => 'array',
+        'is_active' => 'boolean',
+        'price' => 'decimal:2',
+        'old_price' => 'decimal:2',
         'sort_order' => 'integer',
     ];
 
@@ -31,6 +31,7 @@ class Course extends Model
         if ($this->old_price && $this->old_price > $this->price) {
             return (int) round((($this->old_price - $this->price) / $this->old_price) * 100);
         }
+
         return null;
     }
 

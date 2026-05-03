@@ -11,6 +11,7 @@ class MaterialController extends Controller
     public function index()
     {
         $materials = Material::orderBy('sort_order')->orderBy('id')->paginate(20);
+
         return view('admin.materials.index', compact('materials'));
     }
 
@@ -23,6 +24,7 @@ class MaterialController extends Controller
     {
         $data = $this->validated($request);
         Material::create($data);
+
         return redirect()->route('admin.materials.index')->with('success', 'Material added!');
     }
 
@@ -35,34 +37,37 @@ class MaterialController extends Controller
     {
         $data = $this->validated($request);
         $material->update($data);
+
         return redirect()->route('admin.materials.index')->with('success', 'Material updated!');
     }
 
     public function destroy(Material $material)
     {
         $material->delete();
+
         return back()->with('success', 'Material deleted.');
     }
 
     public function toggleActive(Material $material)
     {
-        $material->update(['is_active' => !$material->is_active]);
+        $material->update(['is_active' => ! $material->is_active]);
+
         return back()->with('success', 'Status updated.');
     }
 
     private function validated(Request $request): array
     {
         $data = $request->validate([
-            'title'        => ['required', 'string', 'max:255'],
-            'description'  => ['required', 'string'],
-            'icon'         => ['required', 'string', 'max:10'],
-            'icon_bg_class'=> ['required', 'string', 'max:20'],
-            'tags'         => ['required', 'string'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'icon' => ['required', 'string', 'max:10'],
+            'icon_bg_class' => ['required', 'string', 'max:20'],
+            'tags' => ['required', 'string'],
             'external_url' => ['nullable', 'url'],
-            'sort_order'   => ['integer', 'min:0'],
+            'sort_order' => ['integer', 'min:0'],
         ]);
 
-        $data['is_active']  = $request->boolean('is_active');
+        $data['is_active'] = $request->boolean('is_active');
         $data['sort_order'] = $request->input('sort_order', 0);
         $data['tags'] = array_filter(array_map('trim', explode(',', $data['tags'])));
 

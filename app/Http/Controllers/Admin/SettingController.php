@@ -11,6 +11,7 @@ class SettingController extends Controller
     public function index()
     {
         $settings = SiteSetting::all()->groupBy('group');
+
         return view('admin.settings', compact('settings'));
     }
 
@@ -20,6 +21,7 @@ class SettingController extends Controller
         foreach ($inputs as $key => $value) {
             SiteSetting::set($key, $value ?? '');
         }
+
         return back()->with('success', 'Settings saved successfully!');
     }
 }

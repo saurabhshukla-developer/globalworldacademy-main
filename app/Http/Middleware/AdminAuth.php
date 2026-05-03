@@ -10,10 +10,11 @@ class AdminAuth
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::guard('admin')->check()) {
+        if (! Auth::guard('admin')->check()) {
             return redirect()->route('admin.login')
                 ->with('error', 'Please log in to access the admin panel.');
         }
+
         return $next($request);
     }
 }
