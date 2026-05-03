@@ -23,9 +23,9 @@ class SiteSettingSeeder extends Seeder
             ['key' => 'stat_students',   'label' => 'Students Count',     'group' => 'stats',   'value' => '10'],
             ['key' => 'stat_mcq',        'label' => 'MCQ Count (K)',      'group' => 'stats',   'value' => '5'],
             ['key' => 'stat_videos',     'label' => 'Video Count',        'group' => 'stats',   'value' => '500'],
-            ['key' => 'stat_years',      'label' => 'Years of Experience','group' => 'stats',   'value' => '5'],
+            ['key' => 'stat_years',      'label' => 'Years of Experience', 'group' => 'stats',   'value' => '5'],
             // social
-            ['key' => 'youtube_url',     'label' => 'YouTube Channel URL','group' => 'social',  'value' => 'https://www.youtube.com/channel/UCAUjpk6WmdECWyGj90yl9Qg'],
+            ['key' => 'youtube_url',     'label' => 'YouTube Channel URL', 'group' => 'social',  'value' => 'https://www.youtube.com/channel/UCAUjpk6WmdECWyGj90yl9Qg'],
             ['key' => 'classplus_url',   'label' => 'Classplus App URL',  'group' => 'social',  'value' => 'https://classplusapp.com/w/global-world-academy-xygeb'],
             ['key' => 'website_url',     'label' => 'Official Website',   'group' => 'social',  'value' => 'https://globalworldacademy.com'],
         ];

@@ -4,13 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::table('quiz_questions', function (Blueprint $table) {
             // nullable so existing rows aren't broken; we'll backfill via seeder
             $table->foreignId('topic_id')->nullable()->after('id')
-                  ->constrained('quiz_topics')->nullOnDelete();
+                ->constrained('quiz_topics')->nullOnDelete();
             // bilingual question/explanation
             $table->text('question_hi')->nullable()->after('question');
             $table->text('explanation_hi')->nullable()->after('explanation');

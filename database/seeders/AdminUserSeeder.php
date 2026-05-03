@@ -13,7 +13,7 @@ class AdminUserSeeder extends Seeder
         AdminUser::firstOrCreate(
             ['email' => 'admin@globalworldacademy.com'],
             [
-                'name'     => 'Admin',
+                'name' => 'Admin',
                 'password' => Hash::make('Admin@12345'),
             ]
         );
