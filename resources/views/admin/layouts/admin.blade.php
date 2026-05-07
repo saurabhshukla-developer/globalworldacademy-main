@@ -53,6 +53,10 @@
          class="nav-link {{ request()->routeIs('admin.materials.*') ? 'active' : '' }}">
         <span class="icon">📥</span> Study Materials
       </a>
+      <a href="{{ route('admin.post-categories.index') }}"
+         class="nav-link {{ request()->routeIs('admin.post-categories.*') ? 'active' : '' }}">
+        <span class="icon">📰</span> Post Categories
+      </a>
 
       <div class="nav-section">Config</div>
       <a href="{{ route('admin.settings') }}"

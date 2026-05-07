@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MaterialController;
+use App\Http\Controllers\Admin\PostCategoryController;
 use App\Http\Controllers\Admin\QuizCategoryController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizTopicController;
@@ -45,6 +46,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('quiz-categories/{quizCategory}', [QuizCategoryController::class, 'update'])->name('quiz-categories.update');
         Route::delete('quiz-categories/{quizCategory}', [QuizCategoryController::class, 'destroy'])->name('quiz-categories.destroy');
         Route::patch('quiz-categories/{quizCategory}/toggle', [QuizCategoryController::class, 'toggleActive'])->name('quiz-categories.toggle');
+
+        /* Post Categories */
+        Route::get('post-categories', [PostCategoryController::class, 'index'])->name('post-categories.index');
+        Route::post('post-categories/toggle-featured', [PostCategoryController::class, 'toggleFeatured'])->name('post-categories.toggle-featured');
+        Route::post('post-categories/reorder', [PostCategoryController::class, 'reorder'])->name('post-categories.reorder');
+        Route::get('post-categories/refresh', [PostCategoryController::class, 'refresh'])->name('post-categories.refresh');
 
         /* Quiz Topics */
         Route::get('quiz-topics', [QuizTopicController::class, 'index'])->name('quiz-topics.index');
