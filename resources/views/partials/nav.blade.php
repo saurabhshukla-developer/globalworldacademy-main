@@ -12,6 +12,7 @@
     <li><a href="{{ url('/') }}#quiz">{{ __('site.nav_quiz') }}</a></li>
     <li><a href="{{ url('/') }}#materials">{{ __('site.nav_materials') }}</a></li>
     <li><a href="{{ url('/') }}#youtube">{{ __('site.nav_youtube') }}</a></li>
+    <li><a href="{{ route('tutorials') }}">{{ __('site.nav_blog_posts') }}</a></li>
     <li><a href="{{ url('/') }}#faq">{{ __('site.nav_faq') }}</a></li>
 
     {{-- Language Switcher --}}
@@ -42,6 +43,7 @@
   <a href="{{ url('/') }}#quiz"      onclick="closeMenu()">{{ __('site.nav_quiz') }}</a>
   <a href="{{ url('/') }}#materials" onclick="closeMenu()">{{ __('site.nav_materials') }}</a>
   <a href="{{ url('/') }}#youtube"   onclick="closeMenu()">{{ __('site.nav_youtube') }}</a>
+  <a href="{{ route('tutorials') }}"      onclick="closeMenu()">{{ __('site.nav_blog_posts') }}</a>
   <a href="{{ url('/') }}#faq"       onclick="closeMenu()">{{ __('site.nav_faq') }}</a>
   <a href="{{ route('quiz') }}"      onclick="closeMenu()">{{ __('site.nav_quiz_page') }}</a>
   <div style="display:flex;gap:8px;padding:8px 0;">

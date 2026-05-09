@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 /* ── PUBLIC ─────────────────────────────────────────────── */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/quiz', [HomeController::class, 'quiz'])->name('quiz');
+Route::get('/tutorials', [HomeController::class, 'tutorials'])->name('tutorials');
 
 /* ── ADMIN AUTH ─────────────────────────────────────────── */
 Route::prefix('admin')->name('admin.')->group(function () {

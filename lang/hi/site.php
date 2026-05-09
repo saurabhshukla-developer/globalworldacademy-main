@@ -7,6 +7,7 @@ return [
     'nav_materials' => 'अध्ययन सामग्री',
     'nav_youtube' => 'यूट्यूब',
     'nav_faq' => 'सवाल-जवाब',
+    'nav_blog_posts' => 'ट्यूटोरियल्स',
     'nav_enroll' => 'अभी जुड़ें',
     'nav_quiz_page' => 'डेली क्विज़ पेज',
 
