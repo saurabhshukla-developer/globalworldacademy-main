@@ -23,7 +23,7 @@
 </section> -->
 
 <section class="courses" aria-labelledby="featured-categories-heading">
-  <div class="section-head center">
+  <div class="section-head center" style="margin-top:80px;">
     <div>
       <span class="sec-label">Tutorials</span>
       <h2 class="sec-title" id="featured-categories-heading">Featured Categories</h2>
