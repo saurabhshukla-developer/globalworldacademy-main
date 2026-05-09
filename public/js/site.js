@@ -18,6 +18,8 @@ function getLocalText(obj, key) {
 }
 
 function loadQuiz(topic, btn) {
+  if (!window.quizData || !window.quizData[topic]) return;
+
   currentQuiz = topic; currentQ = 0; score = 0; answered = false;
   document.querySelectorAll('.quiz-topic-btn').forEach(function(b) { b.classList.remove('active'); });
   if (btn) btn.classList.add('active');
@@ -159,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /* ── INIT QUIZ */
-  loadQuiz('science', null);
+  loadQuiz(window.quizData && window.quizData.science ? 'science' : Object.keys(window.quizData || {})[0], null);
 });
 
 /* ── MOBILE MENU ─────────────────────────────────────────── */
