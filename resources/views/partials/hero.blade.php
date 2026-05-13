@@ -30,7 +30,7 @@
          target="_blank" rel="noopener" class="btn btn-blue">
         Browse Courses &rarr;
       </a>
-      <a href="#quiz" class="btn btn-outline">🧠 Take Free Quiz</a>
+      <a href="{{ route('quiz') }}" class="btn btn-outline">🧠 Take Free Quiz</a>
     </div>
     <div class="hero-trust">
       <div class="trust-avatars" aria-hidden="true">
