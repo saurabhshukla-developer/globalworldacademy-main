@@ -33,6 +33,24 @@ class HomeController extends Controller
         return view('quiz-app', compact('settings', 'quizSubjects', 'subjects'));
     }
 
+    public function studyMaterials()
+    {
+        $settings = SiteSetting::pluck('value', 'key');
+        $uncategorized = Material::active()->whereNull('topic_id')->orderBy('sort_order')->orderBy('id')->get();
+
+        $subjects = QuizSubject::with([
+            'activeTopics' => function ($query) {
+                $query->with([
+                    'materials' => function ($q) {
+                        $q->where('is_active', true)->orderBy('sort_order')->orderBy('id');
+                    },
+                ]);
+            },
+        ])->active()->orderBy('sort_order')->orderBy('id')->get();
+
+        return view('study-materials', compact('settings', 'subjects', 'uncategorized'));
+    }
+
     public function tutorials()
     {
         $settings = SiteSetting::pluck('value', 'key');

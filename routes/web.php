@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 /* ── PUBLIC ─────────────────────────────────────────────── */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/study-materials', [HomeController::class, 'studyMaterials'])->name('study-materials');
 Route::get('/quiz', [HomeController::class, 'quiz'])->name('quiz');
 Route::get('/tutorials', function () {
     $url = config('app.wp_base_url');

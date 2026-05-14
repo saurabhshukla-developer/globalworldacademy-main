@@ -10,6 +10,7 @@ final class QuizQuestionsExcelImportResult
     public function __construct(
         public readonly int $imported,
         public readonly array $errors,
+        public readonly int $skippedDuplicates = 0,
     ) {}
 
     public function ok(): bool

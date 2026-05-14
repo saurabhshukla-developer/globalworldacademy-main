@@ -4,20 +4,26 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Material;
+use App\Models\QuizSubject;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
     public function index()
     {
-        $materials = Material::orderBy('sort_order')->orderBy('id')->paginate(20);
+        $materials = Material::with(['quizTopic.subject'])
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->paginate(20);
 
         return view('admin.materials.index', compact('materials'));
     }
 
     public function create()
     {
-        return view('admin.materials.create');
+        $subjects = QuizSubject::with('topics')->orderBy('sort_order')->orderBy('id')->get();
+
+        return view('admin.materials.create', compact('subjects'));
     }
 
     public function store(Request $request)
@@ -30,7 +36,9 @@ class MaterialController extends Controller
 
     public function edit(Material $material)
     {
-        return view('admin.materials.edit', compact('material'));
+        $subjects = QuizSubject::with('topics')->orderBy('sort_order')->orderBy('id')->get();
+
+        return view('admin.materials.edit', compact('material', 'subjects'));
     }
 
     public function update(Request $request, Material $material)
@@ -57,15 +65,33 @@ class MaterialController extends Controller
 
     private function validated(Request $request): array
     {
+        $merge = [];
+        $ext = $request->input('external_url');
+        if ($ext === '' || $ext === null) {
+            $merge['external_url'] = null;
+        }
+        $tid = $request->input('topic_id');
+        if ($tid === '' || $tid === null) {
+            $merge['topic_id'] = null;
+        }
+        if ($merge !== []) {
+            $request->merge($merge);
+        }
+
         $data = $request->validate([
+            'topic_id' => ['nullable', 'integer', 'exists:quiz_topics,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'icon' => ['required', 'string', 'max:10'],
             'icon_bg_class' => ['required', 'string', 'max:20'],
             'tags' => ['required', 'string'],
-            'external_url' => ['nullable', 'url'],
+            'external_url' => ['nullable', 'string', 'max:2048', 'url'],
             'sort_order' => ['integer', 'min:0'],
         ]);
+
+        $data['external_url'] = isset($data['external_url']) && $data['external_url'] !== ''
+            ? $data['external_url']
+            : null;
 
         $data['is_active'] = $request->boolean('is_active');
         $data['sort_order'] = $request->input('sort_order', 0);

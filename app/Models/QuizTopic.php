@@ -40,6 +40,11 @@ class QuizTopic extends Model
         return $this->questions()->where('is_active', true)->orderBy('sort_order');
     }
 
+    public function materials(): HasMany
+    {
+        return $this->hasMany(Material::class, 'topic_id')->orderBy('sort_order')->orderBy('id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true)->orderBy('sort_order')->orderBy('id');

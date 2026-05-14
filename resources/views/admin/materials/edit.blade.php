@@ -18,6 +18,24 @@
     </div>
 
     <div class="form-group">
+      <label class="form-label">Subject / Topic</label>
+      <select name="topic_id" class="form-control {{ $errors->has('topic_id') ? 'is-invalid' : '' }}">
+        <option value="">— None (general listing) —</option>
+        @foreach($subjects as $subj)
+          <optgroup label="{{ $subj->name }}">
+            @foreach($subj->topics as $topic)
+              <option value="{{ $topic->id }}" {{ (string) old('topic_id', $material->topic_id ?? '') === (string) $topic->id ? 'selected' : '' }}>
+                {{ $topic->name }}
+              </option>
+            @endforeach
+          </optgroup>
+        @endforeach
+      </select>
+      <div class="form-hint">Optional. Groups this item on the public Study Materials page.</div>
+      @error('topic_id')<span class="invalid-feedback">{{ $message }}</span>@enderror
+    </div>
+
+    <div class="form-group">
       <label class="form-label">Description <span class="req">*</span></label>
       <textarea name="description" rows="3" class="form-control" required>{{ old('description', $material->description) }}</textarea>
     </div>
@@ -59,7 +77,8 @@
 
     <div class="form-group">
       <div class="form-check">
-        <input type="checkbox" id="is_active" name="is_active" value="1" {{ $material->is_active ? 'checked' : '' }}/>
+        <input type="hidden" name="is_active" value="0"/>
+        <input type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', $material->is_active) ? 'checked' : '' }}/>
         <label for="is_active">Active (show on website)</label>
       </div>
     </div>

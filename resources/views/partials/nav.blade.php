@@ -10,7 +10,7 @@
   <ul>
     <li><a href="{{ url('/') }}#courses">{{ __('site.nav_courses') }}</a></li>
     <li><a href="{{ route('quiz') }}">{{ __('site.nav_quiz') }}</a></li>
-    <li><a href="{{ url('/') }}#materials">{{ __('site.nav_materials') }}</a></li>
+    <li><a href="{{ route('study-materials') }}">{{ __('site.nav_materials') }}</a></li>
     <li><a href="{{ url('/') }}#youtube">{{ __('site.nav_youtube') }}</a></li>
     <li><a href="{{ route('tutorials') }}">{{ __('site.nav_blog_posts') }}</a></li>
     <li><a href="{{ url('/') }}#faq">{{ __('site.nav_faq') }}</a></li>
@@ -41,7 +41,7 @@
 <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
   <a href="{{ url('/') }}#courses"   onclick="closeMenu()">{{ __('site.nav_courses') }}</a>
   <a href="{{ route('quiz') }}"      onclick="closeMenu()">{{ __('site.nav_quiz') }}</a>
-  <a href="{{ url('/') }}#materials" onclick="closeMenu()">{{ __('site.nav_materials') }}</a>
+  <a href="{{ route('study-materials') }}" onclick="closeMenu()">{{ __('site.nav_materials') }}</a>
   <a href="{{ url('/') }}#youtube"   onclick="closeMenu()">{{ __('site.nav_youtube') }}</a>
   <a href="{{ route('tutorials') }}"      onclick="closeMenu()">{{ __('site.nav_blog_posts') }}</a>
   <a href="{{ url('/') }}#faq"       onclick="closeMenu()">{{ __('site.nav_faq') }}</a>

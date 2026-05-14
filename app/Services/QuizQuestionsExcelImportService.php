@@ -34,11 +34,12 @@ class QuizQuestionsExcelImportService
 
         $lines = [
             '1. Fill in the "Questions" sheet only. Do not rename that sheet. Row 1 must remain the column headers.',
-            '2. Each row is one MCQ with exactly four options (A–D). The file is validated first; nothing is saved if any row has errors.',
+            '2. Each row is one MCQ with exactly four options (A–D). If any row fails validation, nothing from the file is saved.',
             '3. Topic linking: every row must include subject_id and topic_id (numeric IDs only). Copy them from "Subjects reference" and "Topics reference". topic_id must belong to that subject_id or the row fails validation.',
             '4. Columns on Questions: subject_id, topic_id, question, question_hi, option_a–d, answer (A/B/C/D or 1–4), explanation, explanation_hi, sort_order, is_active.',
-            '5. Maximum '.self::MAX_DATA_ROWS.' question rows per file.',
-            '6. Save as .xlsx and upload from Admin → Quiz Questions → Import.',
+            '5. Duplicate questions (same English wording, four options, and correct answer as existing data or another row in this file) are skipped and counted in the upload summary.',
+            '6. Maximum '.self::MAX_DATA_ROWS.' question rows per file.',
+            '7. Save as .xlsx and upload from Admin → Quiz Questions → Import.',
         ];
 
         $r = 3;
@@ -179,6 +180,8 @@ class QuizQuestionsExcelImportService
         /** @var list<array<string, mixed>> $parsedRows */
         $parsedRows = [];
         $dataRowCount = 0;
+        $skippedDuplicates = 0;
+        $seenHashes = [];
 
         for ($rowNum = 2; $rowNum <= $highestRow; $rowNum++) {
             $cells = [];
@@ -205,7 +208,27 @@ class QuizQuestionsExcelImportService
                 continue;
             }
 
-            $parsedRows[] = $this->cellsToPayload($cells);
+            $payload = $this->cellsToPayload($cells);
+            $hash = QuizQuestion::contentHashFrom(
+                $payload['question'],
+                $payload['options'],
+                $payload['answer_index']
+            );
+
+            if (isset($seenHashes[$hash])) {
+                $skippedDuplicates++;
+
+                continue;
+            }
+
+            if (QuizQuestion::fingerprintExists($hash)) {
+                $skippedDuplicates++;
+
+                continue;
+            }
+
+            $seenHashes[$hash] = true;
+            $parsedRows[] = $payload;
         }
 
         if ($dataRowCount === 0) {
@@ -213,7 +236,7 @@ class QuizQuestionsExcelImportService
         }
 
         if ($this->errors !== []) {
-            return new QuizQuestionsExcelImportResult(0, $this->errors);
+            return new QuizQuestionsExcelImportResult(0, $this->errors, 0);
         }
 
         $imported = 0;
@@ -224,7 +247,7 @@ class QuizQuestionsExcelImportService
             }
         });
 
-        return new QuizQuestionsExcelImportResult($imported, []);
+        return new QuizQuestionsExcelImportResult($imported, [], $skippedDuplicates);
     }
 
     /**

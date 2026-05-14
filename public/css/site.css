@@ -1358,6 +1358,41 @@ nav ul a:hover {
   color: #fff;
 }
 
+a.download-btn {
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.study-materials-page {
+  padding: 32px 5vw 80px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.study-materials-page .study-subject-section {
+  margin-top: 40px;
+}
+
+.study-materials-page .study-subject-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 0 0 8px;
+  scroll-margin-top: 96px;
+}
+
+.study-materials-page .study-topic-section {
+  margin-top: 28px;
+}
+
+.study-materials-page .study-topic-heading {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  scroll-margin-top: 96px;
+}
+
 .download-btn.downloaded {
   background: var(--green-lt);
   color: var(--green);

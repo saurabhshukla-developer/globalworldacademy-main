@@ -51,6 +51,13 @@ class QuizController extends Controller
         $data['is_active'] = $request->boolean('is_active', true);
         $data['sort_order'] = $request->input('sort_order', 0);
 
+        $hash = QuizQuestion::contentHashFrom($data['question'], $data['options'], (int) $data['answer_index']);
+        if (QuizQuestion::fingerprintExists($hash)) {
+            return back()->withErrors([
+                'question' => 'A question with the same English wording, four answer choices, and correct answer already exists.',
+            ])->withInput();
+        }
+
         QuizQuestion::create($data);
 
         return redirect()->route('admin.quiz.index')->with('success', 'Question added!');
@@ -77,6 +84,13 @@ class QuizController extends Controller
             'sort_order' => ['integer', 'min:0'],
         ]);
         $data['is_active'] = $request->boolean('is_active');
+        $hash = QuizQuestion::contentHashFrom($data['question'], $data['options'], (int) $data['answer_index']);
+        if (QuizQuestion::fingerprintExists($hash, $quiz->id)) {
+            return back()->withErrors([
+                'question' => 'A question with the same English wording, four answer choices, and correct answer already exists.',
+            ])->withInput();
+        }
+
         $quiz->update($data);
 
         return redirect()->route('admin.quiz.index')->with('success', 'Question updated!');
@@ -129,6 +143,16 @@ class QuizController extends Controller
             return back()->with('import_errors', $result->errors);
         }
 
-        return back()->with('success', $result->imported.' question(s) imported successfully.');
+        $msgParts = [];
+        if ($result->imported > 0) {
+            $msgParts[] = $result->imported.' question(s) imported successfully.';
+        } else {
+            $msgParts[] = 'No new questions were imported.';
+        }
+        if ($result->skippedDuplicates > 0) {
+            $msgParts[] = $result->skippedDuplicates.' duplicate row(s) skipped (same English question text, four options, and correct answer as existing data or repeated in this file).';
+        }
+
+        return back()->with('success', implode(' ', $msgParts));
     }
 }

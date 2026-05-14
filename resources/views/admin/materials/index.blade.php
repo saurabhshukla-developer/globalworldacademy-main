@@ -15,7 +15,7 @@
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>#</th><th>Icon</th><th>Title</th><th>Tags</th><th>Order</th><th>Status</th><th>Actions</th></tr>
+        <tr><th>#</th><th>Icon</th><th>Title</th><th>Topic</th><th>Tags</th><th>Order</th><th>Status</th><th>Actions</th></tr>
       </thead>
       <tbody>
         @forelse($materials as $m)
@@ -23,6 +23,13 @@
           <td style="color:var(--muted);">{{ $m->id }}</td>
           <td style="font-size:20px;">{{ $m->icon }}</td>
           <td><strong>{{ $m->title }}</strong></td>
+          <td style="font-size:13px;color:var(--muted);max-width:200px;">
+            @if($m->quizTopic)
+              {{ $m->quizTopic->subject->name ?? '—' }} · {{ $m->quizTopic->name }}
+            @else
+              —
+            @endif
+          </td>
           <td>
             @foreach($m->tags ?? [] as $tag)
               <span class="badge" style="background:var(--blue-lt);color:var(--blue);margin:2px;">{{ $tag }}</span>
@@ -50,7 +57,7 @@
           </td>
         </tr>
         @empty
-        <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">
+        <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--muted);">
           No materials yet. <a href="{{ route('admin.materials.create') }}" style="color:var(--blue);">Add one →</a>
         </td></tr>
         @endforelse

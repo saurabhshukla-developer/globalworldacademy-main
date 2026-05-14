@@ -20,6 +20,63 @@ class QuizQuestion extends Model
         'topic_id' => 'integer',
     ];
 
+    protected static function booted(): void
+    {
+        static::saving(function (QuizQuestion $model) {
+            $model->content_hash = self::contentHashFrom(
+                (string) $model->question,
+                $model->options ?? [],
+                (int) $model->answer_index
+            );
+        });
+    }
+
+    /** Normalize question text for duplicate detection (English column only). */
+    public static function normalizeQuestionText(string $question): string
+    {
+        $collapsed = preg_replace('/\s+/u', ' ', trim(mb_strtolower($question)));
+
+        return is_string($collapsed) ? $collapsed : '';
+    }
+
+    /**
+     * @param  list<string>|array<int, string>  $options
+     * @return list<string>
+     */
+    public static function normalizeOptions(array $options): array
+    {
+        $out = [];
+        foreach (array_values($options) as $opt) {
+            $c = preg_replace('/\s+/u', ' ', trim(mb_strtolower((string) $opt)));
+            $out[] = is_string($c) ? $c : '';
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param  list<string>|array<int, string>  $options
+     */
+    public static function contentHashFrom(string $question, array $options, int $answerIndex): string
+    {
+        $normalizedOpts = self::normalizeOptions($options);
+
+        return hash(
+            'sha256',
+            self::normalizeQuestionText($question).'|'.json_encode($normalizedOpts, JSON_UNESCAPED_UNICODE).'|'.$answerIndex
+        );
+    }
+
+    public static function fingerprintExists(string $hash, ?int $exceptId = null): bool
+    {
+        $q = static::query()->where('content_hash', $hash);
+        if ($exceptId !== null) {
+            $q->where('id', '!=', $exceptId);
+        }
+
+        return $q->exists();
+    }
+
     public function quizTopic(): BelongsTo
     {
         return $this->belongsTo(QuizTopic::class, 'topic_id');
@@ -45,5 +102,4 @@ class QuizQuestion extends Model
             ? $this->explanation_hi
             : ($this->explanation ?? '');
     }
-
 }
