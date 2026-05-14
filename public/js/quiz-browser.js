@@ -368,15 +368,53 @@
     renderQuiz();
   }
 
-  function collapseTopicsOnMobile() {
-    if (window.matchMedia('(max-width: 900px)').matches && currentTopicId) {
-      byId('quizSidebar').classList.add('topics-collapsed');
+  function isMobileTopicsDrawer() {
+    return window.matchMedia('(max-width: 900px)').matches;
+  }
+
+  function syncSidebarAriaHidden() {
+    var side = byId('quizSidebar');
+    if (!side) return;
+    if (!isMobileTopicsDrawer()) {
+      side.removeAttribute('aria-hidden');
+      return;
+    }
+    if (document.body.classList.contains('quiz-drawer-open')) {
+      side.removeAttribute('aria-hidden');
+    } else {
+      side.setAttribute('aria-hidden', 'true');
     }
   }
 
+  function openTopicsDrawer() {
+    if (!isMobileTopicsDrawer()) return;
+    document.body.classList.add('quiz-drawer-open');
+    var bd = byId('quizTopicsBackdrop');
+    if (bd) bd.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    var toggle = byId('showTopicsBtn');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    syncSidebarAriaHidden();
+  }
+
+  function closeTopicsDrawer() {
+    document.body.classList.remove('quiz-drawer-open');
+    var bd = byId('quizTopicsBackdrop');
+    if (bd) bd.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    var toggle = byId('showTopicsBtn');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    syncSidebarAriaHidden();
+  }
+
   function showTopics() {
-    byId('quizSidebar').classList.remove('topics-collapsed');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    openTopicsDrawer();
+  }
+
+  function collapseTopicsOnMobile() {
+    if (isMobileTopicsDrawer() && currentTopicId) {
+      closeTopicsDrawer();
+    }
   }
 
   function initFromUrl() {
@@ -411,6 +449,25 @@
       renderSidebar(event.target.value);
     });
     if (showTopicsBtn) showTopicsBtn.addEventListener('click', showTopics);
+
+    var backdrop = byId('quizTopicsBackdrop');
+    if (backdrop) backdrop.addEventListener('click', closeTopicsDrawer);
+
+    var drawerCloseBtn = byId('quizDrawerCloseBtn');
+    if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeTopicsDrawer);
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && document.body.classList.contains('quiz-drawer-open')) {
+        closeTopicsDrawer();
+      }
+    });
+
+    window.addEventListener('resize', function () {
+      if (!isMobileTopicsDrawer()) {
+        closeTopicsDrawer();
+      }
+      syncSidebarAriaHidden();
+    });
     if (retryQuizBtn) retryQuizBtn.addEventListener('click', retryQuiz);
     if (copyScoreLink) copyScoreLink.addEventListener('click', copyShareLink);
 
@@ -449,5 +506,6 @@
     renderSidebar('');
     bindEvents();
     initFromUrl();
+    syncSidebarAriaHidden();
   });
 })();

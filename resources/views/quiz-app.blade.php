@@ -33,10 +33,16 @@
 </header>
 
 <div class="quiz-layout">
-  <aside class="quiz-sidebar" id="quizSidebar" aria-label="Quiz subjects and topics">
+  <div class="quiz-topics-backdrop" id="quizTopicsBackdrop" aria-hidden="true"></div>
+  <aside class="quiz-sidebar" id="quizSidebar" aria-label="{{ app()->getLocale() === 'hi' ? 'क्विज़ विषय व टॉपिक' : 'Quiz subjects and topics' }}">
     <div class="quiz-sidebar-header">
-      <div class="quiz-sidebar-title">📋 Quiz Topics</div>
-      <div class="quiz-sidebar-sub">{{ app()->getLocale() === 'hi' ? 'विषय और टॉपिक चुनें' : 'Choose a subject and topic' }}</div>
+      <div class="quiz-sidebar-heading">
+        <div class="quiz-sidebar-title">📋 Quiz Topics</div>
+        <div class="quiz-sidebar-sub">{{ app()->getLocale() === 'hi' ? 'विषय और टॉपिक चुनें' : 'Choose a subject and topic' }}</div>
+      </div>
+      <button type="button" class="quiz-drawer-close-btn" id="quizDrawerCloseBtn" aria-label="{{ app()->getLocale() === 'hi' ? 'मेनू बंद करें' : 'Close topics menu' }}">
+        <span aria-hidden="true">✕</span>
+      </button>
     </div>
     <div class="quiz-sidebar-search">
       <input type="search" id="quizSearch" placeholder="{{ app()->getLocale() === 'hi' ? 'टॉपिक खोजें...' : 'Search topics...' }}" autocomplete="off"/>
@@ -72,7 +78,9 @@
   </aside>
 
   <main class="quiz-main">
-    <button class="topics-toggle-btn" type="button" id="showTopicsBtn">Topics List</button>
+    <button class="topics-toggle-btn" type="button" id="showTopicsBtn" aria-expanded="false" aria-controls="quizSidebar">
+      {{ app()->getLocale() === 'hi' ? '📋 विषय व टॉपिक' : '📋 Topics' }}
+    </button>
 
     <section class="quiz-empty-state" id="emptyState" aria-live="polite">
       <div class="empty-icon">🧠</div>
