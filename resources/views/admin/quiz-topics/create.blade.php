@@ -10,16 +10,16 @@
   <form method="POST" action="{{ route('admin.quiz-topics.store') }}">
     @csrf
     <div class="form-group">
-      <label class="form-label">Category <span class="req">*</span></label>
-      <select name="category_id" class="form-control {{ $errors->has('category_id') ? 'is-invalid':'' }}" required>
-        <option value="">-- Select Category --</option>
-        @foreach($categories as $cat)
-        <option value="{{ $cat->id }}" {{ old('category_id')==$cat->id ? 'selected':'' }}>
-          {{ $cat->icon }} {{ $cat->name }} {{ $cat->name_hi ? '('.$cat->name_hi.')':'' }}
+      <label class="form-label">Subject <span class="req">*</span></label>
+      <select name="subject_id" class="form-control {{ $errors->has('subject_id') ? 'is-invalid':'' }}" required>
+        <option value="">-- Select Subject --</option>
+        @foreach($subjects as $subject)
+        <option value="{{ $subject->id }}" {{ old('subject_id')==$subject->id ? 'selected':'' }}>
+          {{ $subject->icon }} {{ $subject->name }} {{ $subject->name_hi ? '('.$subject->name_hi.')':'' }}
         </option>
         @endforeach
       </select>
-      @error('category_id')<span class="invalid-feedback">{{ $message }}</span>@enderror
+      @error('subject_id')<span class="invalid-feedback">{{ $message }}</span>@enderror
     </div>
     <div class="form-row">
       <div class="form-group">

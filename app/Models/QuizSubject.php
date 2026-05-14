@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-class QuizCategory extends Model
+class QuizSubject extends Model
 {
+    protected $table = 'quiz_subjects';
+
     protected $fillable = [
         'name', 'name_hi', 'slug', 'description', 'description_hi',
         'icon', 'color', 'is_active', 'sort_order',
@@ -26,7 +28,7 @@ class QuizCategory extends Model
 
     public function topics(): HasMany
     {
-        return $this->hasMany(QuizTopic::class, 'category_id')->orderBy('sort_order');
+        return $this->hasMany(QuizTopic::class, 'subject_id')->orderBy('sort_order');
     }
 
     public function activeTopics(): HasMany

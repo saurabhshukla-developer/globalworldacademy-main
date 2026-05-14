@@ -8,10 +8,10 @@
   <div class="card-header">
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
       <form method="GET" style="display:flex;gap:8px;align-items:center;">
-        <select name="category_id" class="form-control" style="width:auto;padding:8px 12px;" onchange="this.form.submit()">
-          <option value="">All Categories</option>
-          @foreach($categories as $cat)
-          <option value="{{ $cat->id }}" {{ request('category_id')==$cat->id ? 'selected':'' }}>{{ $cat->icon }} {{ $cat->name }}</option>
+        <select name="subject_id" class="form-control" style="width:auto;padding:8px 12px;" onchange="this.form.submit()">
+          <option value="">All Subjects</option>
+          @foreach($subjects as $subject)
+          <option value="{{ $subject->id }}" {{ request('subject_id')==$subject->id ? 'selected':'' }}>{{ $subject->icon }} {{ $subject->name }}</option>
           @endforeach
         </select>
       </form>
@@ -21,15 +21,15 @@
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>#</th><th>Category</th><th>Icon</th><th>Name</th><th>Hindi</th><th>Questions</th><th>Order</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>#</th><th>Subject</th><th>Icon</th><th>Name</th><th>Hindi</th><th>Questions</th><th>Order</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody>
         @forelse($topics as $topic)
         <tr>
           <td style="color:var(--muted);">{{ $topic->id }}</td>
           <td>
-            @if($topic->category)
-              <span class="badge badge-topic" style="background:{{ $topic->category->color }}20;color:{{ $topic->category->color }};">
-                {{ $topic->category->icon }} {{ $topic->category->name }}
+            @if($topic->subject)
+              <span class="badge badge-topic" style="background:{{ $topic->subject->color }}20;color:{{ $topic->subject->color }};">
+                {{ $topic->subject->icon }} {{ $topic->subject->name }}
               </span>
             @endif
           </td>

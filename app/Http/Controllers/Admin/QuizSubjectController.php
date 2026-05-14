@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\QuizCategory;
+use App\Models\QuizSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class QuizCategoryController extends Controller
+class QuizSubjectController extends Controller
 {
     public function index()
     {
-        $categories = QuizCategory::withCount(['topics', 'topics as questions_count' => fn ($q) => $q->has('questions')])->orderBy('sort_order')->paginate(20);
+        $subjects = QuizSubject::withCount(['topics', 'topics as questions_count' => fn ($q) => $q->has('questions')])->orderBy('sort_order')->paginate(20);
 
-        return view('admin.quiz-categories.index', compact('categories'));
+        return view('admin.quiz-subjects.index', compact('subjects'));
     }
 
     public function create()
     {
-        return view('admin.quiz-categories.create');
+        return view('admin.quiz-subjects.create');
     }
 
     public function store(Request $request)
@@ -36,17 +36,17 @@ class QuizCategoryController extends Controller
         $data['is_active'] = $request->boolean('is_active', true);
         $data['sort_order'] = $request->input('sort_order', 0);
 
-        QuizCategory::create($data);
+        QuizSubject::create($data);
 
-        return redirect()->route('admin.quiz-categories.index')->with('success', 'Category created!');
+        return redirect()->route('admin.quiz-subjects.index')->with('success', 'Subject created!');
     }
 
-    public function edit(QuizCategory $quizCategory)
+    public function edit(QuizSubject $quizSubject)
     {
-        return view('admin.quiz-categories.edit', compact('quizCategory'));
+        return view('admin.quiz-subjects.edit', compact('quizSubject'));
     }
 
-    public function update(Request $request, QuizCategory $quizCategory)
+    public function update(Request $request, QuizSubject $quizSubject)
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
@@ -60,21 +60,21 @@ class QuizCategoryController extends Controller
         $data['is_active'] = $request->boolean('is_active');
         $data['sort_order'] = $request->input('sort_order', 0);
 
-        $quizCategory->update($data);
+        $quizSubject->update($data);
 
-        return redirect()->route('admin.quiz-categories.index')->with('success', 'Category updated!');
+        return redirect()->route('admin.quiz-subjects.index')->with('success', 'Subject updated!');
     }
 
-    public function destroy(QuizCategory $quizCategory)
+    public function destroy(QuizSubject $quizSubject)
     {
-        $quizCategory->delete();
+        $quizSubject->delete();
 
-        return back()->with('success', 'Category deleted.');
+        return back()->with('success', 'Subject deleted.');
     }
 
-    public function toggleActive(QuizCategory $quizCategory)
+    public function toggleActive(QuizSubject $quizSubject)
     {
-        $quizCategory->update(['is_active' => ! $quizCategory->is_active]);
+        $quizSubject->update(['is_active' => ! $quizSubject->is_active]);
 
         return back()->with('success', 'Status updated.');
     }

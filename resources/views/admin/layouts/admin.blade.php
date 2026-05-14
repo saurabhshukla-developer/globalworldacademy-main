@@ -31,9 +31,9 @@
       </a>
 
       <div class="nav-section">Quiz</div>
-      <a href="{{ route('admin.quiz-categories.index') }}"
-         class="nav-link {{ request()->routeIs('admin.quiz-categories.*') ? 'active' : '' }}">
-        <span class="icon">🗂️</span> Categories
+      <a href="{{ route('admin.quiz-subjects.index') }}"
+         class="nav-link {{ request()->routeIs('admin.quiz-subjects.*') ? 'active' : '' }}">
+        <span class="icon">🗂️</span> Subjects
       </a>
       <a href="{{ route('admin.quiz-topics.index') }}"
          class="nav-link {{ request()->routeIs('admin.quiz-topics.*') ? 'active' : '' }}">

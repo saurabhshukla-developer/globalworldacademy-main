@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\QuizCategory;
+use App\Models\QuizSubject;
 use App\Models\QuizQuestion;
 use App\Models\QuizTopic;
 use Illuminate\Http\Request;
@@ -12,24 +12,24 @@ class QuizController extends Controller
 {
     public function index(Request $request)
     {
-        $query = QuizQuestion::with('quizTopic.category');
+        $query = QuizQuestion::with('quizTopic.subject');
         if ($request->filled('topic_id')) {
             $query->where('topic_id', $request->topic_id);
-        } elseif ($request->filled('category_id')) {
-            $query->whereHas('topic', fn ($q) => $q->where('category_id', $request->category_id));
+        } elseif ($request->filled('subject_id')) {
+            $query->whereHas('quizTopic', fn ($q) => $q->where('subject_id', $request->subject_id));
         }
         $questions = $query->orderBy('topic_id')->orderBy('sort_order')->paginate(20);
-        $categories = QuizCategory::with('topics')->orderBy('sort_order')->get();
+        $subjects = QuizSubject::with('topics')->orderBy('sort_order')->get();
         $topics = QuizTopic::orderBy('sort_order')->get();
 
-        return view('admin.quiz.index', compact('questions', 'categories', 'topics'));
+        return view('admin.quiz.index', compact('questions', 'subjects', 'topics'));
     }
 
     public function create()
     {
-        $categories = QuizCategory::with('topics')->orderBy('sort_order')->get();
+        $subjects = QuizSubject::with('topics')->orderBy('sort_order')->get();
 
-        return view('admin.quiz.create', compact('categories'));
+        return view('admin.quiz.create', compact('subjects'));
     }
 
     public function store(Request $request)
@@ -47,9 +47,6 @@ class QuizController extends Controller
         ]);
         $data['is_active'] = $request->boolean('is_active', true);
         $data['sort_order'] = $request->input('sort_order', 0);
-        // Keep legacy topic string for backward compat
-        $topic = QuizTopic::find($data['topic_id']);
-        $data['topic'] = $topic?->slug ?? 'general';
 
         QuizQuestion::create($data);
 
@@ -58,9 +55,9 @@ class QuizController extends Controller
 
     public function edit(QuizQuestion $quiz)
     {
-        $categories = QuizCategory::with('topics')->orderBy('sort_order')->get();
+        $subjects = QuizSubject::with('topics')->orderBy('sort_order')->get();
 
-        return view('admin.quiz.edit', compact('quiz', 'categories'));
+        return view('admin.quiz.edit', compact('quiz', 'subjects'));
     }
 
     public function update(Request $request, QuizQuestion $quiz)
@@ -77,8 +74,6 @@ class QuizController extends Controller
             'sort_order' => ['integer', 'min:0'],
         ]);
         $data['is_active'] = $request->boolean('is_active');
-        $topic = QuizTopic::find($data['topic_id']);
-        $data['topic'] = $topic?->slug ?? 'general';
         $quiz->update($data);
 
         return redirect()->route('admin.quiz.index')->with('success', 'Question updated!');

@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Admin\PostCategoryController;
-use App\Http\Controllers\Admin\QuizCategoryController;
+use App\Http\Controllers\Admin\QuizSubjectController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizTopicController;
 use App\Http\Controllers\Admin\SettingController;
@@ -39,14 +39,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
         Route::patch('quiz/{quiz}/toggle', [QuizController::class, 'toggleActive'])->name('quiz.toggle');
 
-        /* Quiz Categories */
-        Route::get('quiz-categories', [QuizCategoryController::class, 'index'])->name('quiz-categories.index');
-        Route::get('quiz-categories/create', [QuizCategoryController::class, 'create'])->name('quiz-categories.create');
-        Route::post('quiz-categories', [QuizCategoryController::class, 'store'])->name('quiz-categories.store');
-        Route::get('quiz-categories/{quizCategory}/edit', [QuizCategoryController::class, 'edit'])->name('quiz-categories.edit');
-        Route::put('quiz-categories/{quizCategory}', [QuizCategoryController::class, 'update'])->name('quiz-categories.update');
-        Route::delete('quiz-categories/{quizCategory}', [QuizCategoryController::class, 'destroy'])->name('quiz-categories.destroy');
-        Route::patch('quiz-categories/{quizCategory}/toggle', [QuizCategoryController::class, 'toggleActive'])->name('quiz-categories.toggle');
+        /* Quiz Subjects */
+        Route::get('quiz-subjects', [QuizSubjectController::class, 'index'])->name('quiz-subjects.index');
+        Route::get('quiz-subjects/create', [QuizSubjectController::class, 'create'])->name('quiz-subjects.create');
+        Route::post('quiz-subjects', [QuizSubjectController::class, 'store'])->name('quiz-subjects.store');
+        Route::get('quiz-subjects/{quizSubject}/edit', [QuizSubjectController::class, 'edit'])->name('quiz-subjects.edit');
+        Route::put('quiz-subjects/{quizSubject}', [QuizSubjectController::class, 'update'])->name('quiz-subjects.update');
+        Route::delete('quiz-subjects/{quizSubject}', [QuizSubjectController::class, 'destroy'])->name('quiz-subjects.destroy');
+        Route::patch('quiz-subjects/{quizSubject}/toggle', [QuizSubjectController::class, 'toggleActive'])->name('quiz-subjects.toggle');
 
         /* Post Categories */
         Route::get('post-categories', [PostCategoryController::class, 'index'])->name('post-categories.index');

@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('quiz_categories', function (Blueprint $table) {
+        Schema::create('quiz_subjects', function (Blueprint $table) {
             $table->id();
             $table->string('name');           // English name
             $table->string('name_hi')->nullable();  // Hindi name
@@ -25,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('quiz_categories');
+        Schema::dropIfExists('quiz_subjects');
     }
 };

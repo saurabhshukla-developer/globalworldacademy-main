@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\QuizCategory;
+use App\Models\QuizSubject;
 use App\Models\QuizTopic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,27 +12,27 @@ class QuizTopicController extends Controller
 {
     public function index(Request $request)
     {
-        $query = QuizTopic::with('category')->withCount('questions');
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+        $query = QuizTopic::with('subject')->withCount('questions');
+        if ($request->filled('subject_id')) {
+            $query->where('subject_id', $request->subject_id);
         }
-        $topics = $query->orderBy('category_id')->orderBy('sort_order')->paginate(25);
-        $categories = QuizCategory::orderBy('sort_order')->get();
+        $topics = $query->orderBy('subject_id')->orderBy('sort_order')->paginate(25);
+        $subjects = QuizSubject::orderBy('sort_order')->get();
 
-        return view('admin.quiz-topics.index', compact('topics', 'categories'));
+        return view('admin.quiz-topics.index', compact('topics', 'subjects'));
     }
 
     public function create()
     {
-        $categories = QuizCategory::active()->get();
+        $subjects = QuizSubject::active()->get();
 
-        return view('admin.quiz-topics.create', compact('categories'));
+        return view('admin.quiz-topics.create', compact('subjects'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'category_id' => ['required', 'exists:quiz_categories,id'],
+            'subject_id' => ['required', 'exists:quiz_subjects,id'],
             'name' => ['required', 'string', 'max:150'],
             'name_hi' => ['nullable', 'string', 'max:150'],
             'description' => ['nullable', 'string'],
@@ -50,15 +50,15 @@ class QuizTopicController extends Controller
 
     public function edit(QuizTopic $quizTopic)
     {
-        $categories = QuizCategory::orderBy('sort_order')->get();
+        $subjects = QuizSubject::orderBy('sort_order')->get();
 
-        return view('admin.quiz-topics.edit', compact('quizTopic', 'categories'));
+        return view('admin.quiz-topics.edit', compact('quizTopic', 'subjects'));
     }
 
     public function update(Request $request, QuizTopic $quizTopic)
     {
         $data = $request->validate([
-            'category_id' => ['required', 'exists:quiz_categories,id'],
+            'subject_id' => ['required', 'exists:quiz_subjects,id'],
             'name' => ['required', 'string', 'max:150'],
             'name_hi' => ['nullable', 'string', 'max:150'],
             'description' => ['nullable', 'string'],

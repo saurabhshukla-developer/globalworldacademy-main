@@ -2,25 +2,25 @@
 
 namespace Database\Seeders;
 
-use App\Models\QuizCategory;
 use App\Models\QuizQuestion;
+use App\Models\QuizSubject;
 use App\Models\QuizTopic;
 use Illuminate\Database\Seeder;
 
-class QuizCategoryTopicSeeder extends Seeder
+class QuizSubjectTopicSeeder extends Seeder
 {
     public function run(): void
     {
         $subjects = $this->subjects();
 
-        QuizCategory::whereNotIn('slug', array_column($subjects, 'slug'))
+        QuizSubject::whereNotIn('slug', array_column($subjects, 'slug'))
             ->update(['sort_order' => 1000]);
 
         foreach ($subjects as $subjectIndex => $subjectData) {
             $topics = $subjectData['topics'];
             unset($subjectData['topics']);
 
-            $category = QuizCategory::updateOrCreate(
+            $subject = QuizSubject::updateOrCreate(
                 ['slug' => $subjectData['slug']],
                 array_merge($subjectData, [
                     'sort_order' => $subjectIndex + 1,
@@ -30,23 +30,16 @@ class QuizCategoryTopicSeeder extends Seeder
 
             foreach ($topics as $topicIndex => $topicData) {
                 $questions = $topicData['questions'];
-                $legacyKey = $topicData['legacy_key'] ?? null;
-                unset($topicData['questions'], $topicData['legacy_key']);
+                unset($topicData['questions']);
 
                 $topic = QuizTopic::updateOrCreate(
                     ['slug' => $topicData['slug']],
                     array_merge($topicData, [
-                        'category_id' => $category->id,
+                        'subject_id' => $subject->id,
                         'sort_order' => $topicIndex + 1,
                         'is_active' => true,
                     ])
                 );
-
-                if ($legacyKey) {
-                    QuizQuestion::where('topic', $legacyKey)
-                        ->whereNull('topic_id')
-                        ->update(['topic_id' => $topic->id]);
-                }
 
                 $this->seedQuestions($topic, $questions);
             }
@@ -62,7 +55,6 @@ class QuizCategoryTopicSeeder extends Seeder
                     'question' => $question['question'],
                 ],
                 array_merge($question, [
-                    'topic' => $topic->slug,
                     'sort_order' => $index + 1,
                     'is_active' => true,
                 ])
@@ -105,7 +97,6 @@ class QuizCategoryTopicSeeder extends Seeder
                         'name_hi' => 'सामान्य विज्ञान',
                         'slug' => 'science-general',
                         'icon' => '⚗️',
-                        'legacy_key' => 'science',
                         'questions' => [
                             $this->q('What is the chemical formula of water?', ['CO2', 'H2O', 'O2', 'NaCl'], 1, 'Water contains two hydrogen atoms and one oxygen atom.'),
                             $this->q('Which planet is known as the Red Planet?', ['Venus', 'Jupiter', 'Mars', 'Saturn'], 2, 'Mars appears red because of iron oxide on its surface.'),
@@ -162,7 +153,6 @@ class QuizCategoryTopicSeeder extends Seeder
                         'name_hi' => 'बाल विकास एवं शिक्षाशास्त्र',
                         'slug' => 'cdp-pedagogy',
                         'icon' => '👶',
-                        'legacy_key' => 'child_dev',
                         'questions' => [
                             $this->q('Piaget sensorimotor stage occurs during:', ['0-2 years', '2-7 years', '7-11 years', '11+ years'], 0, 'The sensorimotor stage spans birth to about two years.'),
                             $this->q('Vygotsky ZPD means:', ['Current ability only', 'Learning possible with support', 'Memory capacity', 'IQ score'], 1, 'ZPD is the gap between independent performance and performance with guidance.'),

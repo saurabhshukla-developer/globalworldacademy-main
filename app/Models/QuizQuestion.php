@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class QuizQuestion extends Model
 {
     protected $fillable = [
-        'topic_id', 'topic', 'question', 'question_hi', 'options', 'answer_index',
+        'topic_id', 'question', 'question_hi', 'options', 'answer_index',
         'explanation', 'explanation_hi', 'is_active', 'sort_order',
     ];
 
@@ -46,20 +46,4 @@ class QuizQuestion extends Model
             : ($this->explanation ?? '');
     }
 
-    // ── Legacy helpers (kept for backward compatibility) ──
-    public static function topicLabel(string $topic): string
-    {
-        return match ($topic) {
-            'science' => '🔬 Science',
-            'child_dev' => '👶 Child Development',
-            'gk' => '🌍 General Knowledge',
-            'mp' => '🗺️ MP GK',
-            default => ucfirst($topic),
-        };
-    }
-
-    public static function topics(): array
-    {
-        return ['science', 'child_dev', 'gk', 'mp'];
-    }
 }

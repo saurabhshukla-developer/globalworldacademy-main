@@ -12,12 +12,13 @@
   <div class="card-header">
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
       <form method="GET" style="display:flex;gap:10px;align-items:center;">
-        <select name="topic" class="form-control" style="width:auto;padding:8px 12px;" onchange="this.form.submit()">
+        <select name="topic_id" class="form-control" style="width:auto;padding:8px 12px;" onchange="this.form.submit()">
           <option value="">All Topics</option>
-          <option value="science"   {{ request('topic')=='science'   ? 'selected' : '' }}>🔬 Science</option>
-          <option value="child_dev" {{ request('topic')=='child_dev' ? 'selected' : '' }}>👶 Child Dev</option>
-          <option value="gk"        {{ request('topic')=='gk'        ? 'selected' : '' }}>🌍 GK</option>
-          <option value="mp"        {{ request('topic')=='mp'        ? 'selected' : '' }}>🗺️ MP GK</option>
+          @foreach($topics as $topic)
+          <option value="{{ $topic->id }}" {{ (string) request('topic_id') === (string) $topic->id ? 'selected' : '' }}>
+            {{ $topic->icon }} {{ $topic->name }}
+          </option>
+          @endforeach
         </select>
       </form>
       <span style="font-size:13px;color:var(--muted);">{{ $questions->total() }} questions</span>
@@ -38,7 +39,7 @@
           <td style="color:var(--muted);">{{ $q->id }}</td>
           <td>
             @if($q->quizTopic)
-              <div style="font-size:11px;color:var(--muted);">{{ $q->quizTopic->category->name ?? '' }}</div>
+              <div style="font-size:11px;color:var(--muted);">{{ $q->quizTopic->subject->name ?? '' }}</div>
               <span class="badge badge-topic">{{ $q->quizTopic->icon }} {{ $q->quizTopic->name }}</span>
             @else
               <span class="badge badge-inactive">{{ $q->topic }}</span>

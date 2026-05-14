@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('quiz_topics', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('quiz_categories')->cascadeOnDelete();
+            $table->foreignId('subject_id')->constrained('quiz_subjects')->cascadeOnDelete();
             $table->string('name');
             $table->string('name_hi')->nullable();
             $table->string('slug')->unique();

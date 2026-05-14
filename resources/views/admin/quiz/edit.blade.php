@@ -12,12 +12,12 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Category</label>
-        <select id="catSelect" class="form-control" onchange="filterTopics(this.value)">
+        <label class="form-label">Subject</label>
+        <select id="subjectSelect" class="form-control" onchange="filterTopics(this.value)">
           <option value="">-- All --</option>
-          @foreach($categories as $cat)
-          <option value="{{ $cat->id }}" {{ $quiz->quizTopic?->category_id==$cat->id ? 'selected':'' }}>
-            {{ $cat->icon }} {{ $cat->name }}
+          @foreach($subjects as $subject)
+          <option value="{{ $subject->id }}" {{ $quiz->quizTopic?->subject_id==$subject->id ? 'selected':'' }}>
+            {{ $subject->icon }} {{ $subject->name }}
           </option>
           @endforeach
         </select>
@@ -25,9 +25,9 @@
       <div class="form-group">
         <label class="form-label">Topic <span class="req">*</span></label>
         <select name="topic_id" id="topicSelect" class="form-control" required>
-          @foreach($categories as $cat)
-            @foreach($cat->topics as $t)
-            <option value="{{ $t->id }}" data-cat="{{ $cat->id }}"
+          @foreach($subjects as $subject)
+            @foreach($subject->topics as $t)
+            <option value="{{ $t->id }}" data-subject="{{ $subject->id }}"
                     {{ old('topic_id',$quiz->topic_id)==$t->id ? 'selected':'' }}>
               {{ $t->icon }} {{ $t->name }}
             </option>
@@ -104,9 +104,9 @@
 
 @push('scripts')
 <script>
-function filterTopics(catId) {
-  document.querySelectorAll('#topicSelect option[data-cat]').forEach(function(o) {
-    o.style.display = (!catId || o.dataset.cat === catId) ? '' : 'none';
+function filterTopics(subjectId) {
+  document.querySelectorAll('#topicSelect option[data-subject]').forEach(function(o) {
+    o.style.display = (!subjectId || o.dataset.subject === subjectId) ? '' : 'none';
   });
 }
 </script>

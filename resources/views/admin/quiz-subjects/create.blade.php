@@ -1,13 +1,13 @@
 @extends('admin.layouts.admin')
-@section('title','Add Category')
-@section('page-title','+ Add Quiz Category')
+@section('title','Add Subject')
+@section('page-title','+ Add Quiz Subject')
 @section('content')
 <div class="breadcrumb">
   <a href="{{ route('admin.dashboard') }}">Dashboard</a> <span>/</span>
-  <a href="{{ route('admin.quiz-categories.index') }}">Categories</a> <span>/</span> Add
+  <a href="{{ route('admin.quiz-subjects.index') }}">Subjects</a> <span>/</span> Add
 </div>
 <div class="card" style="max-width:680px;">
-  <form method="POST" action="{{ route('admin.quiz-categories.store') }}">
+  <form method="POST" action="{{ route('admin.quiz-subjects.store') }}">
     @csrf
     <div class="form-row">
       <div class="form-group">
@@ -58,8 +58,8 @@
       </div>
     </div>
     <div style="display:flex;gap:12px;">
-      <button type="submit" class="btn btn-primary">Save Category</button>
-      <a href="{{ route('admin.quiz-categories.index') }}" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save Subject</button>
+      <a href="{{ route('admin.quiz-subjects.index') }}" class="btn btn-outline">Cancel</a>
     </div>
   </form>
 </div>

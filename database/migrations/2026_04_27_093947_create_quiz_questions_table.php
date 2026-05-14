@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('quiz_questions', function (Blueprint $table) {
             $table->id();
-            $table->string('topic');          // science | child_dev | gk | mp
             $table->text('question');
             $table->json('options');          // ["A","B","C","D"]
             $table->unsignedTinyInteger('answer_index'); // 0-3

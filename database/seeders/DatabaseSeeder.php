@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class,
             SiteSettingSeeder::class,
-            QuizCategoryTopicSeeder::class,
+            QuizSubjectTopicSeeder::class,
             CourseSeeder::class,
             MaterialSeeder::class,
         ]);

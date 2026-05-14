@@ -10,14 +10,14 @@
   <form method="POST" action="{{ route('admin.quiz.store') }}">
     @csrf
 
-    {{-- Category → Topic selector --}}
+    {{-- Subject → Topic selector --}}
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Category <span class="req">*</span></label>
-        <select id="catSelect" class="form-control" onchange="filterTopics(this.value)">
-          <option value="">-- Select Category First --</option>
-          @foreach($categories as $cat)
-          <option value="{{ $cat->id }}">{{ $cat->icon }} {{ $cat->name }}</option>
+        <label class="form-label">Subject <span class="req">*</span></label>
+        <select id="subjectSelect" class="form-control" onchange="filterTopics(this.value)">
+          <option value="">-- Select Subject First --</option>
+          @foreach($subjects as $subject)
+          <option value="{{ $subject->id }}">{{ $subject->icon }} {{ $subject->name }}</option>
           @endforeach
         </select>
       </div>
@@ -25,9 +25,9 @@
         <label class="form-label">Topic <span class="req">*</span></label>
         <select name="topic_id" id="topicSelect" class="form-control {{ $errors->has('topic_id') ? 'is-invalid':'' }}" required>
           <option value="">-- Select Topic --</option>
-          @foreach($categories as $cat)
-            @foreach($cat->topics as $t)
-            <option value="{{ $t->id }}" data-cat="{{ $cat->id }}" {{ old('topic_id')==$t->id ? 'selected':'' }}>
+          @foreach($subjects as $subject)
+            @foreach($subject->topics as $t)
+            <option value="{{ $t->id }}" data-subject="{{ $subject->id }}" {{ old('topic_id')==$t->id ? 'selected':'' }}>
               {{ $t->icon }} {{ $t->name }}
             </option>
             @endforeach
@@ -112,19 +112,19 @@
 
 @push('scripts')
 <script>
-function filterTopics(catId) {
-  var opts = document.querySelectorAll('#topicSelect option[data-cat]');
+function filterTopics(subjectId) {
+  var opts = document.querySelectorAll('#topicSelect option[data-subject]');
   opts.forEach(function(o) {
-    o.style.display = (!catId || o.dataset.cat === catId) ? '' : 'none';
+    o.style.display = (!subjectId || o.dataset.subject === subjectId) ? '' : 'none';
   });
   document.getElementById('topicSelect').value = '';
 }
-// Pre-select category if topic is already selected (edit mode / old())
+// Pre-select subject if topic is already selected (edit mode / old())
 (function() {
   var sel = document.getElementById('topicSelect');
   if (sel.value) {
     var opt = sel.querySelector('option[value="' + sel.value + '"]');
-    if (opt) document.getElementById('catSelect').value = opt.dataset.cat;
+    if (opt) document.getElementById('subjectSelect').value = opt.dataset.subject;
   }
 })();
 </script>

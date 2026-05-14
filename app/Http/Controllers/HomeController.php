@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\FeaturedPostCategory;
 use App\Models\Material;
-use App\Models\QuizCategory;
+use App\Models\QuizSubject;
 use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -18,19 +18,19 @@ class HomeController extends Controller
         $courses = Course::active()->get();
         $materials = Material::active()->get();
         $settings = SiteSetting::pluck('value', 'key');
-        $categories = QuizCategory::with(['activeTopics.activeQuestions'])->active()->get();
-        $quizData = $this->buildQuizData($categories);
+        $subjects = QuizSubject::with(['activeTopics.activeQuestions'])->active()->get();
+        $quizData = $this->buildQuizData($subjects);
 
-        return view('welcome', compact('courses', 'materials', 'settings', 'quizData', 'categories'));
+        return view('welcome', compact('courses', 'materials', 'settings', 'quizData', 'subjects'));
     }
 
     public function quiz()
     {
         $settings = SiteSetting::pluck('value', 'key');
-        $categories = QuizCategory::with(['activeTopics.activeQuestions'])->active()->get();
-        $quizSubjects = $this->buildQuizSubjectsData($categories);
+        $subjects = QuizSubject::with(['activeTopics.activeQuestions'])->active()->get();
+        $quizSubjects = $this->buildQuizSubjectsData($subjects);
 
-        return view('quiz-app', compact('settings', 'quizSubjects', 'categories'));
+        return view('quiz-app', compact('settings', 'quizSubjects', 'subjects'));
     }
 
     public function tutorials()
@@ -123,12 +123,12 @@ class HomeController extends Controller
         return trim(html_entity_decode(strip_tags($value ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
-    /** Build JS-ready quiz data from DB categories/topics */
-    private function buildQuizData($categories): array
+    /** Build JS-ready quiz data from DB subjects/topics */
+    private function buildQuizData($subjects): array
     {
         $out = [];
-        foreach ($categories as $cat) {
-            foreach ($cat->activeTopics as $topic) {
+        foreach ($subjects as $subject) {
+            foreach ($subject->activeTopics as $topic) {
                 $questions = $topic->activeQuestions;
                 if ($questions->isEmpty()) {
                     continue;
@@ -138,9 +138,9 @@ class HomeController extends Controller
                     'name' => $topic->name,
                     'name_hi' => $topic->name_hi ?? $topic->name,
                     'icon' => $topic->icon,
-                    'category' => $cat->name,
-                    'category_hi' => $cat->name_hi ?? $cat->name,
-                    'color' => $cat->color,
+                    'subject' => $subject->name,
+                    'subject_hi' => $subject->name_hi ?? $subject->name,
+                    'color' => $subject->color,
                     'questions' => $questions->map(fn ($q) => [
                         'q' => $q->question,
                         'q_hi' => $q->question_hi ?? $q->question,
@@ -157,18 +157,18 @@ class HomeController extends Controller
     }
 
     /** Build subject/topic quiz data for the standalone quiz browser */
-    private function buildQuizSubjectsData($categories): array
+    private function buildQuizSubjectsData($subjects): array
     {
-        return $categories->map(function ($cat) {
+        return $subjects->map(function ($subject) {
             return [
-                'id' => $cat->slug,
-                'name' => $cat->name,
-                'name_hi' => $cat->name_hi ?? $cat->name,
-                'description' => $cat->description ?? '',
-                'description_hi' => $cat->description_hi ?? $cat->description ?? '',
-                'icon' => $cat->icon,
-                'color' => $cat->color,
-                'topics' => $cat->activeTopics->map(function ($topic) {
+                'id' => $subject->slug,
+                'name' => $subject->name,
+                'name_hi' => $subject->name_hi ?? $subject->name,
+                'description' => $subject->description ?? '',
+                'description_hi' => $subject->description_hi ?? $subject->description ?? '',
+                'icon' => $subject->icon,
+                'color' => $subject->color,
+                'topics' => $subject->activeTopics->map(function ($topic) {
                     return [
                         'id' => $topic->slug,
                         'name' => $topic->name,
