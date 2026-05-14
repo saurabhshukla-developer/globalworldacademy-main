@@ -41,8 +41,7 @@
     <div class="footer-col">
       <h4>Free Resources</h4>
       <ul>
-        <li><a href="{{ url('/') }}#quiz">Free MCQ Quiz</a></li>
-        <li><a href="{{ route('quiz') }}">Daily Quiz Page</a></li>
+        <li><a href="{{ route('quiz') }}">Free MCQ Quiz</a></li>
         <li><a href="{{ url('/') }}#materials">Science Notes PDF</a></li>
         <li><a href="{{ url('/') }}#materials">Previous Year Papers</a></li>
         <li><a href="{{ url('/') }}#materials">CDP Summary Sheet</a></li>

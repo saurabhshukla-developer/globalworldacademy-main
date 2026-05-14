@@ -28,9 +28,9 @@ class HomeController extends Controller
     {
         $settings = SiteSetting::pluck('value', 'key');
         $categories = QuizCategory::with(['activeTopics.activeQuestions'])->active()->get();
-        $quizData = $this->buildQuizData($categories);
+        $quizSubjects = $this->buildQuizSubjectsData($categories);
 
-        return view('quiz', compact('settings', 'quizData', 'categories'));
+        return view('quiz-app', compact('settings', 'quizSubjects', 'categories'));
     }
 
     public function tutorials()
@@ -154,5 +154,38 @@ class HomeController extends Controller
         }
 
         return $out;
+    }
+
+    /** Build subject/topic quiz data for the standalone quiz browser */
+    private function buildQuizSubjectsData($categories): array
+    {
+        return $categories->map(function ($cat) {
+            return [
+                'id' => $cat->slug,
+                'name' => $cat->name,
+                'name_hi' => $cat->name_hi ?? $cat->name,
+                'description' => $cat->description ?? '',
+                'description_hi' => $cat->description_hi ?? $cat->description ?? '',
+                'icon' => $cat->icon,
+                'color' => $cat->color,
+                'topics' => $cat->activeTopics->map(function ($topic) {
+                    return [
+                        'id' => $topic->slug,
+                        'name' => $topic->name,
+                        'name_hi' => $topic->name_hi ?? $topic->name,
+                        'description' => $topic->description ?? '',
+                        'icon' => $topic->icon,
+                        'questions' => $topic->activeQuestions->map(fn ($q) => [
+                            'q' => $q->question,
+                            'q_hi' => $q->question_hi ?? $q->question,
+                            'opts' => $q->options,
+                            'ans' => $q->answer_index,
+                            'explain' => $q->explanation ?? '',
+                            'explain_hi' => $q->explanation_hi ?? $q->explanation ?? '',
+                        ])->values()->toArray(),
+                    ];
+                })->values()->toArray(),
+            ];
+        })->values()->toArray();
     }
 }
