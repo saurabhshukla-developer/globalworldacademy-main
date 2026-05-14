@@ -42,6 +42,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('quiz/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
         Route::delete('quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
         Route::patch('quiz/{quiz}/toggle', [QuizController::class, 'toggleActive'])->name('quiz.toggle');
+        Route::get('quiz/import-template', [QuizController::class, 'downloadImportTemplate'])->name('quiz.import-template');
+        Route::post('quiz/import', [QuizController::class, 'importExcel'])->name('quiz.import');
 
         /* Quiz Subjects */
         Route::get('quiz-subjects', [QuizSubjectController::class, 'index'])->name('quiz-subjects.index');

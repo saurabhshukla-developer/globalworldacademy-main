@@ -8,6 +8,22 @@
   <span>/</span> Quiz Questions
 </div>
 
+@if(session('import_errors'))
+<div class="card" style="border-color:#f5c6cb;background:#fdf3f4;margin-bottom:16px;">
+  <div class="card-header" style="border-bottom-color:#f5c6cb;">
+    <strong style="color:#842029;">Import validation failed</strong>
+    <span style="font-size:13px;color:var(--muted);margin-left:8px;">Fix the spreadsheet and try again. No rows were saved.</span>
+  </div>
+  <div style="padding:14px 18px;max-height:220px;overflow-y:auto;font-size:13px;line-height:1.55;color:#842029;">
+    <ul style="margin:0;padding-left:18px;">
+      @foreach(session('import_errors') as $err)
+      <li>{{ $err }}</li>
+      @endforeach
+    </ul>
+  </div>
+</div>
+@endif
+
 <div class="card">
   <div class="card-header">
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
@@ -80,5 +96,27 @@
   <div class="pagination">
     {{ $questions->links('vendor.pagination.simple') }}
   </div>
+</div>
+
+<div class="card" style="margin-top:20px;">
+  <div class="card-header">
+    <strong>Import from Excel</strong>
+    <span style="font-size:13px;color:var(--muted);margin-left:8px;">.xlsx only · max 5 MB · up to {{ \App\Services\QuizQuestionsExcelImportService::MAX_DATA_ROWS }} rows</span>
+  </div>
+  <div style="padding:18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;">
+    <a href="{{ route('admin.quiz.import-template') }}" class="btn btn-outline">⬇ Download demo template</a>
+    <form method="POST" action="{{ route('admin.quiz.import') }}" enctype="multipart/form-data" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+      @csrf
+      <input type="file" name="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required
+             class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" style="max-width:280px;padding:8px;"/>
+      <button type="submit" class="btn btn-primary">Upload &amp; import</button>
+    </form>
+    @error('file')
+    <p style="width:100%;margin:0;font-size:13px;color:#842029;">{{ $message }}</p>
+    @enderror
+  </div>
+  <p style="margin:0 18px 18px;font-size:13px;color:var(--muted);line-height:1.6;">
+    The workbook must include a sheet named <strong>Questions</strong> with columns <code>subject_id</code> and <code>topic_id</code> (copy IDs from <strong>Subjects reference</strong> and <strong>Topics reference</strong>; <code>topic_id</code> must belong to that <code>subject_id</code>). All rows are validated before anything is saved.
+  </p>
 </div>
 @endsection

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\QuizSubject;
 use App\Models\QuizQuestion;
+use App\Models\QuizSubject;
 use App\Models\QuizTopic;
+use App\Services\QuizQuestionsExcelImportService;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class QuizController extends Controller
 {
@@ -91,5 +94,41 @@ class QuizController extends Controller
         $quiz->update(['is_active' => ! $quiz->is_active]);
 
         return back()->with('success', 'Status updated.');
+    }
+
+    public function downloadImportTemplate(QuizQuestionsExcelImportService $importService): StreamedResponse
+    {
+        $spreadsheet = $importService->createTemplateSpreadsheet();
+
+        return response()->streamDownload(function () use ($spreadsheet) {
+            $writer = new Xlsx($spreadsheet);
+            $writer->save('php://output');
+        }, 'quiz_questions_import_template.xlsx', [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
+    }
+
+    public function importExcel(Request $request, QuizQuestionsExcelImportService $importService)
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'max:5120', 'mimes:xlsx'],
+        ], [
+            'file.required' => 'Choose an Excel (.xlsx) file to upload.',
+            'file.mimes' => 'Only .xlsx files are accepted.',
+            'file.max' => 'The file may not be larger than 5 MB.',
+        ]);
+
+        $path = $request->file('file')->getRealPath();
+        if ($path === false) {
+            return back()->withErrors(['file' => 'Could not read the uploaded file.']);
+        }
+
+        $result = $importService->importFromPath($path);
+
+        if (! $result->ok()) {
+            return back()->with('import_errors', $result->errors);
+        }
+
+        return back()->with('success', $result->imported.' question(s) imported successfully.');
     }
 }
