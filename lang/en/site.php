@@ -7,7 +7,7 @@ return [
     'nav_materials' => 'Study Material',
     'nav_youtube' => 'YouTube',
     'nav_faq' => 'FAQ',
-    'nav_blog_posts' => 'Tutorials',
+    'nav_blog_posts' => 'Latest Updates',
     'nav_enroll' => 'Enroll Now',
     'nav_quiz_page' => 'Daily Quiz Page',
 

@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', ($settings['site_name'] ?? 'Global World Academy') . ' – Tutorials')
+@section('title', ($settings['site_name'] ?? 'Global World Academy') . ' – Latest Updates')
 
 @section('meta')
 <meta name="description" content="Global World Academy tutorials and featured categories. This page is ready for WordPress content sync."/>
@@ -8,7 +8,7 @@
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="{{ route('tutorials') }}"/>
 <meta property="og:type" content="website"/>
-<meta property="og:title" content="Tutorials – {{ $settings['site_name'] ?? 'Global World Academy' }}"/>
+<meta property="og:title" content="Latest Updates – {{ $settings['site_name'] ?? 'Global World Academy' }}"/>
 <meta property="og:description" content="Explore tutorials and featured categories from Global World Academy. Content will populate once WordPress integration is active."/>
 <meta property="og:url" content="{{ route('tutorials') }}"/>
 @endsection
@@ -25,7 +25,7 @@
 <section class="courses" aria-labelledby="featured-categories-heading">
   <div class="section-head center" style="margin-top:80px;">
     <div>
-      <span class="sec-label">Tutorials</span>
+      <span class="sec-label">Latest Updates</span>
       <h2 class="sec-title" id="featured-categories-heading">Featured Categories</h2>
     </div>
   </div>
@@ -57,7 +57,7 @@
 
 <section class="blog-posts" aria-labelledby="blog-posts-heading">
   <div class="section-head center">
-    <span class="sec-label">Tutorials</span>
+    <span class="sec-label">Latest Updates</span>
     <h2 class="sec-title" id="blog-posts-heading">Latest Tutorials</h2>
     <p class="sec-desc">Fresh learning guides from Global World Academy.</p>
   </div>

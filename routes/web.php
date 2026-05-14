@@ -5,8 +5,8 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Admin\PostCategoryController;
-use App\Http\Controllers\Admin\QuizSubjectController;
 use App\Http\Controllers\Admin\QuizController;
+use App\Http\Controllers\Admin\QuizSubjectController;
 use App\Http\Controllers\Admin\QuizTopicController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\HomeController;
@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 /* ── PUBLIC ─────────────────────────────────────────────── */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/quiz', [HomeController::class, 'quiz'])->name('quiz');
-Route::get('/tutorials', [HomeController::class, 'tutorials'])->name('tutorials');
+Route::get('/tutorials', function () {
+    $url = config('app.wp_base_url');
+
+    return redirect()->to($url);
+})->name('tutorials');
 
 /* ── ADMIN AUTH ─────────────────────────────────────────── */
 Route::prefix('admin')->name('admin.')->group(function () {

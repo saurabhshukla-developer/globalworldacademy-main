@@ -132,6 +132,7 @@ return [
     |
     */
 
+    'wp_base_url' => env('WP_BASE_URL', 'https://globalworldacademy.com'),
     'wp_api_base_url' => env('WP_API_BASE_URL', 'https://globalworldacademy.com/wp-json/wp/v2'),
 
 ];
